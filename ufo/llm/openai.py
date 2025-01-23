@@ -169,6 +169,8 @@ class OpenAIService(BaseService):
                 token_provider = OpenAIService.get_aad_token_provider(
                     aad_api_scope_base=aad_api_scope_base,
                     aad_tenant_id=aad_tenant_id,
+                    use_managed_identity=True,
+                    client_id="14e8afd2-92b1-4b48-9c89-97a095be4895",
                 )
                 client = AzureOpenAI(
                     max_retries=max_retry,
