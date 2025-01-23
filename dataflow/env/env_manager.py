@@ -1,5 +1,6 @@
 import logging
 import re
+import time
 from time import sleep
 from typing import Optional, Tuple, Dict
 import psutil
@@ -50,6 +51,7 @@ class WindowsAppEnv:
             file_controller.execute_code(
                 {"APP": self.win_app, "file_path": copied_template_path}
             )
+            time.sleep(1)  # wait app open
         except Exception as e:
             logging.exception(f"Failed to start the application: {e}")
             raise
@@ -60,12 +62,13 @@ class WindowsAppEnv:
         """
 
         try:
-            # Attempt to close gracefully
-            if self.app_window:
+            # Gracefully close the application window
+            if self.app_window and self.app_window.process_id():
                 self.app_window.close()
-            
-            self._check_and_kill_process()
             sleep(1)
+            # Forcefully close the application window  
+            if self.app_window.element_info.name.lower() != '':            
+                self._check_and_kill_process()
         except Exception as e:
             logging.warning(f"Graceful close failed: {e}. Attempting to forcefully terminate the process.")
             self._check_and_kill_process()
@@ -77,12 +80,10 @@ class WindowsAppEnv:
         """
 
         try:
-            # Ensure the app_window object is still valid and visible
-            if self.app_window and not self.app_window.is_visible():
-                process = psutil.Process(self.app_window.process_id)
-                if process.is_running():
-                    print(f"Killing process: {self.app_window.process_id}")
-                    process.terminate()
+            if self.app_window and self.app_window.process_id():
+                process = psutil.Process(self.app_window.process_id())
+                print(f"Killing process: {self.app_window.process_id}")
+                process.terminate()
         except Exception as e:
             logging.error(f"Error while checking window status: {e}")
             raise e

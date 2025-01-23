@@ -14,7 +14,7 @@ from dataflow.execution.workflow.execute_flow import ExecuteFlow
 from dataflow.config.config import Config
 
 from ufo.utils import print_with_color
-from learner.utils import load_json_file, save_json_file, transfer_json_file
+from learner.utils import load_json_file, save_json_file, reformat_json_file
 
 from ufo.agents.processors.app_agent_processor import AppAgentProcessor
 from ufo.module.context import Context
@@ -184,7 +184,7 @@ class DataFlowController:
             ChooseTemplateFlow,
             "choose_template",
             init_params=[self.task_object.app_object.file_extension],
-            execute_params=[],
+            execute_params=[self.task_object.refined_steps],
         )
 
         if template_copied_path:
@@ -256,6 +256,7 @@ class DataFlowController:
                 self.task_info["time_cost"]["execute_eval"] = execute_flow.eval_time
             else:
                 self.task_info["time_cost"]["execute_eval"] = None
+            
 
     def instantiation_single_flow(
         self,
@@ -414,7 +415,7 @@ class DataFlowController:
                 target_object = os.path.join(
                     target_template_path, file.replace(".json", ".docx")
                 )
-                is_successed = transfer_json_file(
+                is_successed = reformat_json_file(
                     target_file,
                     target_object,
                     load_json_file(source_file),

@@ -181,7 +181,7 @@ class Session(BaseSession):
                 self.experience_saver()
 
         elif save_experience == "auto":
-            task_completed = self.results.get("task_completed", "no")
+            task_completed = self.results.get("complete", "no")
             if task_completed.lower() == "yes":
                 self.experience_saver()
 
@@ -441,8 +441,8 @@ class FromFileSession(BaseSession):
             ".xlsx": "Excel.Application",
             ".pptx": "PowerPoint.Application",
         }
-        self.app_name = application_mapping.get(object_name)
-        return self.app_name
+
+        return application_mapping.get(object_name)
 
     def run(self) -> None:
         """

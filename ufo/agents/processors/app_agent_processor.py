@@ -81,6 +81,7 @@ class AppAgentRequestLog:
     request: str
     control_info: List[Dict[str, str]]
     subtask: str
+    current_application: str
     host_message: str
     blackboard_prompt: List[str]
     last_success_actions: List[Dict[str, Any]]
@@ -297,6 +298,7 @@ class AppAgentProcessor(BaseProcessor):
             plan=self.prev_plan,
             request=self.request,
             subtask=self.subtask,
+            current_application=self.application_process_name,
             host_message=self.host_message,
             blackboard_prompt=blackboard_prompt,
             last_success_actions=filtered_last_success_actions,
@@ -314,6 +316,7 @@ class AppAgentProcessor(BaseProcessor):
             request=self.request,
             control_info=self.filtered_control_info,
             subtask=self.subtask,
+            current_application=self.application_process_name,
             host_message=self.host_message,
             blackboard_prompt=blackboard_prompt,
             last_success_actions=filtered_last_success_actions,
@@ -321,7 +324,7 @@ class AppAgentProcessor(BaseProcessor):
             prompt=self._prompt_message,
         )
 
-        request_log_str = json.dumps(asdict(request_data), indent=4, ensure_ascii=False)
+        request_log_str = json.dumps(asdict(request_data), ensure_ascii=False)
         self.request_logger.debug(request_log_str)
 
     @BaseProcessor.exception_capture
