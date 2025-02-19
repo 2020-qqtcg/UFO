@@ -32,15 +32,19 @@ class UFOClientManager:
         """
         Run the batch UFO client.
         """
-        send_point = _configs["SEND_POINT"].split(",")
-        total = len(self.session_list)
+        if _configs["MONITOR"]:
+            send_point = _configs["SEND_POINT"].split(",")
+            total = len(self.session_list)
 
-        for idx, session in enumerate(tqdm(self.session_list), start=1):
-            session.run()
+            for idx, session in enumerate(tqdm(self.session_list), start=1):
+                session.run()
 
-            if str(idx) in send_point:
-                message = f"Ufo Execute Completed: {idx}/{total}"
-                send_message(message)
+                if str(idx) in send_point:
+                    message = f"Ufo Execute Completed: {idx}/{total}"
+                    send_message(message)
+        else:
+            for session in tqdm(self.session_list):
+                session.run()
 
     @property
     def session_list(self) -> List[BaseSession]:
