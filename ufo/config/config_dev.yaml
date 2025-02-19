@@ -11,7 +11,7 @@ SHOW_VISUAL_OUTLINE_ON_SCREEN: False
 
 MAXIMIZE_WINDOW: False  # Whether to maximize the application window before the action
 
-SAFE_GUARD: True  # Whether to use the safe guard to prevent the model from doing sensitve operations.
+SAFE_GUARD: False  # Whether to use the safe guard to prevent the model from doing sensitve operations.
 CONTROL_LIST: ["Button", "Edit", "TabItem", "Document", "ListItem", "MenuItem", "ScrollBar", "TreeItem", "Hyperlink", "ComboBox", "RadioButton", "DataItem", "Spinner", "CheckBox"]
 # The list of widgets that allowed to be selected, in uia backend, it will be used for filter the control_type, while in win32 backend, it will be used for filter the class_name.
 HISTORY_KEYS: ["Step", "Subtask", "Action", "UserConfirm"]  # The keys of the action history for the next step.
@@ -108,10 +108,10 @@ DEFAULT_PNG_COMPRESS_LEVEL: 1  # The compress level for the PNG image, 0-9, 0 is
 
 
 # Save UI tree
-SAVE_UI_TREE: False  # Whether to save the UI tree at each step
+SAVE_UI_TREE: True  # Whether to save the UI tree at each step
 
 # Save full screen
-SAVE_FULL_SCREEN: False  # Whether to save the full screen at each step
+SAVE_FULL_SCREEN: True  # Whether to save the full screen at each step
 
 
 # Record the status of the tasks
@@ -120,3 +120,11 @@ TASK_STATUS: True  # Whether to record the status of the tasks in batch executio
 # Experience saving
 SAVE_EXPERIENCE: "always_not"  # Whether to save the experience, can be "always" for always save, "always_not" for always not save, "ask" for asking the user to save or not, "auto" for auto save when the evaluation is good. By default, it is "ask".
 
+# SMTP
+MONITOR: True
+MACHINE_ID: DEV
+SEND_POINT: 1,2
+FROM_EMAIL: 1921761583@qq.com
+TO_EMAIL: v-mujian@microsoft.com
+SENDER_PASSWORD:
+SMTP_SERVER: smtp.qq.com
