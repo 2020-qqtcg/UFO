@@ -128,6 +128,7 @@ system: |-
   - If the task involves a specified system, you just need to remove the specified system. Such as keywords like "xxx for mac", "xxx for web".
   - If the task explicitly states that the operation does not take place on the type of app shown in the screenshot, then you should not make any modifications to the task and return it as is. Such as task occurs on Excel, but screen shows the app is Word.
   
+  
   ## Post
   After you complete all tasks, please review and optimize <New Task> based on the following suggestions:
   1. The detailed target in <New Task> should be specific and clear based on the doc screenshot.
