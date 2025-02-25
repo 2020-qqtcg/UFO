@@ -109,10 +109,10 @@ DEFAULT_PNG_COMPRESS_LEVEL: 1  # The compress level for the PNG image, 0-9, 0 is
 
 
 # Save UI tree
-SAVE_UI_TREE: True  # Whether to save the UI tree at each step
+SAVE_UI_TREE: False  # Whether to save the UI tree at each step
 
 # Save full screen
-SAVE_FULL_SCREEN: True  # Whether to save the full screen at each step
+SAVE_FULL_SCREEN: False  # Whether to save the full screen at each step
 
 
 # Record the status of the tasks
@@ -129,3 +129,8 @@ FROM_EMAIL: 1921761583@qq.com
 TO_EMAIL: v-mujian@microsoft.com
 SENDER_PASSWORD:
 SMTP_SERVER: smtp.qq.com
+# Blob storage
+UPLOAD: True
+ACCOUNT_URL: "https://ufodata.blob.core.windows.net"
+CONTAINER_NAME: "ufodata"
+UPLOAD_INTERVAL: 100
