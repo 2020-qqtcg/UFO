@@ -3,7 +3,7 @@
 import os
 from typing import List
 
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
 from azure.storage.blob import BlobServiceClient
 from tqdm import tqdm
 
@@ -21,7 +21,7 @@ class AzureBlobStorage:
         self.account_url = configs["ACCOUNT_URL"]
         self.container_name = configs["CONTAINER_NAME"]
         # locad credential from local `az login`
-        credential = DefaultAzureCredential()
+        credential = ManagedIdentityCredential(client_id="14e8afd2-92b1-4b48-9c89-97a095be4895")
         blob_service_client = BlobServiceClient(
             account_url=self.account_url,
             credential=credential
