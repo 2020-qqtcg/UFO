@@ -129,6 +129,7 @@ FROM_EMAIL: 1921761583@qq.com
 TO_EMAIL: v-mujian@microsoft.com
 SENDER_PASSWORD:
 SMTP_SERVER: smtp.qq.com
+
 # Blob storage
 UPLOAD: True
 ACCOUNT_URL: "https://ufodata.blob.core.windows.net"

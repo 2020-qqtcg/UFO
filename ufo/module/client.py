@@ -1,18 +1,16 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
-
-
+import smtplib
+from email.header import Header
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import List
 
 from tqdm import tqdm
 
 from ufo.config.config import Config
 from ufo.module.basic import BaseSession
-
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.header import Header
+from ufo.utils.azure_storage import AzureBlobStorage
 
 _configs = Config.get_instance().config_data
 
@@ -32,19 +30,23 @@ class UFOClientManager:
         """
         Run the batch UFO client.
         """
-        if _configs["MONITOR"]:
-            send_point = _configs["SEND_POINT"].split(",")
-            total = len(self.session_list)
+        blob_storage = None
+        if _configs["UPLOAD"]:
+            blob_storage = AzureBlobStorage()
 
-            for idx, session in enumerate(tqdm(self.session_list), start=1):
-                session.run()
+        total = len(self.session_list)
+        for idx, session in enumerate(tqdm(self.session_list), start=1):
+            session.run()
 
+            if _configs["MONITOR"]:
+                send_point = _configs["SEND_POINT"].split(",")
                 if str(idx) in send_point:
                     message = f"Ufo Execute Completed: {idx}/{total}"
                     send_message(message)
-        else:
-            for session in tqdm(self.session_list):
-                session.run()
+
+            if _configs["UPLOAD"] and idx % _configs["UPLOAD_INTERVAL"] == 0:
+                blob_storage.upload_folder(_configs["LOG_ROOT"], _configs["DATA_SOURCE"])
+
 
     @property
     def session_list(self) -> List[BaseSession]:
@@ -67,7 +69,6 @@ class UFOClientManager:
         :return: The next session.
         """
         return self._session_list.pop(0)
-
 
 def send_message(message: str) -> None:
     """
@@ -94,7 +95,7 @@ def send_message(message: str) -> None:
         server.starttls()
         server.login(sender_email, sender_password)
 
-        # 发送邮件
+        # send email
         server.sendmail(sender_email, receiver_email, msg.as_string())
         print(f"Send Email to {receiver_email} sucessfully.")
     except Exception as e:
