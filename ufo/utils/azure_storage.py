@@ -88,6 +88,7 @@ class AzureBlobStorage:
             blob_name = blob.name
             blob_client = self.container_client.get_blob_client(blob_name)
             blob_client.delete_blob()
+            print(f"Delete blob {blob_name}")
         utils.print_with_color(f"Delete {folder_name} in {self.account_url}/{self.container_name}", "green")
 
     def upload_folder(self, log_path: str, data_source: str = "", blob_prefix: str = "") -> None:
