@@ -75,6 +75,19 @@ def json_parser(json_string: str) -> Dict[str, Any]:
 
     return json.loads(json_string)
 
+def markdown_parser(markdown_string: str) -> str:
+    """
+    Parse markdown string.
+    :param markdown_string: The markdown string to parse.
+    :return: The markdown string.
+    """
+
+    # Remove the ```json and ``` at the beginning and end of the string if exists.
+    if markdown_string.startswith("```markdown"):
+        markdown_string = markdown_string[11:-7]
+
+    return markdown_string
+
 
 def is_json_serializable(obj: Any) -> bool:
     """

@@ -48,6 +48,8 @@ FOLLOWERAHENT_PROMPT: "ufo/prompts/share/base/app_agent.yaml"  # The prompt for 
 
 EVALUATION_PROMPT: "ufo/prompts/evaluation/evaluate.yaml"  # The prompt for the evaluation
 
+TUTORIAL_PROMPT: "ufo/prompts/gen/tutorial_gen.yaml" # The prompt for generation tutorial
+
 HOSTAGENT_EXAMPLE_PROMPT: "ufo/prompts/examples/{mode}/host_agent_example.yaml"  # The prompt for the app selection
 # Lite version: "ufo/prompts/examples/lite/{mode}/host_agent_example.yaml"
 APPAGENT_EXAMPLE_PROMPT: "ufo/prompts/examples/{mode}/app_agent_example.yaml"  # The prompt for the action selection
