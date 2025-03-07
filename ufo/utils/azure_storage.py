@@ -5,7 +5,7 @@ from typing import List
 
 from azure.core.paging import ItemPaged
 from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient, BlobProperties
 from tqdm import tqdm
 
 from ufo.config.config import Config
@@ -22,7 +22,7 @@ class AzureBlobStorage:
         self.account_url = configs["ACCOUNT_URL"]
         self.container_name = configs["CONTAINER_NAME"]
         # locad credential from local `az login`
-        credential = AzureCliCredential()
+        credential = ManagedIdentityCredential(client_id="14e8afd2-92b1-4b48-9c89-97a095be4895")
         blob_service_client = BlobServiceClient(
             account_url=self.account_url,
             credential=credential
