@@ -129,7 +129,8 @@ class AzureBlobStorage:
             utils.print_with_color(f"Upload log: {log_path} --> {log_prefix}", "green")
         except Exception as e:
             utils.print_with_color(f"Upload log: {log_path} --> {log_prefix} failed: {e}\n Retry {retry}", "red")
-            self.upload_folder(log_path, data_source, blob_prefix, overwrite, retry + 1)
+            if retry < 5:
+                self.upload_folder(log_path, data_source, blob_prefix, overwrite, retry + 1)
 
     def download_folder(self, folder_prefix: str, output_folder: str) -> None:
         """
