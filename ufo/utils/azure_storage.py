@@ -40,7 +40,7 @@ class AzureBlobStorage:
         if prefix is None:
             return self.container_client.list_blobs()
         else:
-            return self.container_client.list_blobs(prefix=prefix)
+            return self.container_client.list_blobs(name_starts_with=prefix)
 
     def upload_file(self, blob_name: str, input_file_path: str, overwrite: bool = True) -> None:
         """
