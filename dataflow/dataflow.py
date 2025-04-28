@@ -104,27 +104,23 @@ def process_batch(task_dir: str, task_type: str) -> None:
 
     print_with_color(f"Found {len(task_files)} tasks in {task_dir}.", "blue")
 
-    blob_storage = None
-    if _configs["UPLOAD"]:
-        blob_storage = AzureBlobStorage()
     total = len(task_files)
 
-    with ThreadPoolExecutor(max_workers=16) as executor:
-        for idx, task_file in enumerate(tqdm(task_files), start=1):
-            process_task(task_file, task_type)
+    
+    for idx, task_file in enumerate(tqdm(task_files), start=1):
+        process_task(task_file, task_type)
 
-            if _configs["MONITOR"]:
-                # Send email notify
-                send_point = _configs["SEND_POINT"].split(",")
-                if str(idx) in send_point:
-                    message = f"Task Completed {idx}/{total}"
-                    send_message(message)
+        if _configs["MONITOR"]:
+            # Send email notify
+            send_point = _configs["SEND_POINT"].split(",")
+            if str(idx) in send_point:
+                message = f"Task Completed {idx}/{total}"
+                send_message(message)
 
-            if _configs["UPLOAD"] and (idx % _configs["UPLOAD_INTERVAL"] == 0 or idx == total):
-                executor.submit(
-                    lambda :blob_storage.upload_folder(_configs["REFORMAT_TO_BATCH_HUB"], _configs["DATA_SOURCE"], overwrite=False))
-                executor.submit(
-                    lambda: blob_storage.upload_folder(_configs["RESULT_LOG"], _configs["DATA_SOURCE"], overwrite=False))
+    if _configs["UPLOAD"]:
+        # Upload outputs to azure blob
+        blob_storage = AzureBlobStorage()
+        blob_storage.upload_folder(_configs["OUTPUTS_PATH"], _configs["DATA_SOURCE"], overwrite=False)
 
 
 
