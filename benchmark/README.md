@@ -7,12 +7,13 @@ You can clone SpreadsheetBench anywhere.
 git clone https://github.com/RUCKBReasoning/SpreadsheetBench.git
 cd SpreadsheetBench
 conda create -n SpreadsheetBench python=3.10
+conda activate SpreadsheetBench
 # Remove `vllm` from SpreadsheetBench requirements.txt
 pip install -r requirements.txt
 ```
 
 ## Install UFO
-Follow [UFO README](https://github.com/2020-qqtcg/UFO/blob/2020qq-tcg/ssb/README.md) configure UFO.
+Follow [UFO README](https://github.com/2020-qqtcg/UFO/blob/2020qq-tcg/ssb/README.md) install and configure UFO environment.
 
 ## 2. Prepare UFO Task Files
 Step 1: Set Output Directory
