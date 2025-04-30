@@ -11,6 +11,27 @@ output_dir = r'D:\code\SpreadsheetBench\data\sample_data_200\outputs\custom_cust
 tasks_dir = r"D:\code\UFO\benchmark\tasks"
 # --- End Configuration ---
 
+PROMPT_FORMAT_SINGLE = """You need to solve the given spreadsheet manipulation question, which contains six types of information:
+- instruction: The question about spreadsheet manipulation.
+- spreadsheet_path: The path of the spreadsheet file you need to manipulate.
+- spreadsheet_content: The first few rows of the content of speadsheet file.
+- instruction_type: There are two values (Cell-Level Manipulation, Sheet-Level Manipulation) used to indicate whether the answer to this question applies only to specific cells or to the entire worksheet.
+- answer_position: The position need to be modified or filled. For Cell-Level Manipulation questions, this field is filled with the cell position; for Sheet-Level Manipulation, it is the maximum range of cells you need to modify. You only need to modify or fill in values within the cell range specified by answer_position.
+- output_path: You need to generate the modified spreadsheet file in this new path.
+
+Below is the spreadsheet manipulation question you need to solve:
+### instruction
+{instruction}
+
+### instruction_type
+{instruction_type}
+
+### answer_position
+answer_position: {answer_position}
+
+answer_position specifies the location where you fill in the answer. Multiple ranges are separated by commas (','). Within each range, if there is an exclamation mark ('!'), the part to the left of the '!' indicates the sheet, and the part to the right indicates the range.
+"""
+
 def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_dir):
     """
     Reads the dataset JSON, finds corresponding Excel files, and generates
@@ -56,6 +77,8 @@ def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_
         try:
             entry_id = entry.get('id')
             instruction = entry.get('instruction')
+            instruction_type = entry.get('instruction_type')
+            answer_position = entry.get('answer_position')
             spreadsheet_path_suffix = entry.get('spreadsheet_path') # e.g., "spreadsheet/59196"
 
             if not all([entry_id, instruction, spreadsheet_path_suffix]):
@@ -96,9 +119,15 @@ def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_
                 # If you strictly need the 'D:\example.xlsx' format from the example, uncomment the line below:
                 # save_as_path = r"D:\example.xlsx" # Use raw string for Windows paths
 
+                task = PROMPT_FORMAT_SINGLE.format_map({
+                    'instruction': instruction,
+                    'instruction_type': instruction_type,
+                    'answer_position': answer_position
+                })
+
                 # --- Create the output JSON data structure ---
                 output_data = {
-                    "task": instruction,
+                    "task": task,
                     # Use normalized path for object field for consistency
                     "object": os.path.normpath(input_excel_path),
                     "close": "True", # Default value as string
