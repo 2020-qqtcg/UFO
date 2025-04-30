@@ -12,7 +12,7 @@ ACTION_SEQUENCE: False  # Whether to output the action sequence. If true, the ag
 # Skip rendering visual outline on screen if not necessary
 SHOW_VISUAL_OUTLINE_ON_SCREEN: False
 
-MAXIMIZE_WINDOW: False  # Whether to maximize the application window before the action
+MAXIMIZE_WINDOW: True  # Whether to maximize the application window before the action
 
 JSON_PARSING_RETRY: 3  # The retry times for the json parsing
 
@@ -128,16 +128,16 @@ TASK_STATUS: True  # Whether to record the status of the tasks in batch executio
 SAVE_EXPERIENCE: "always_not"  # Whether to save the experience, can be "always" for always save, "always_not" for always not save, "ask" for asking the user to save or not, "auto" for auto save when the evaluation is good. By default, it is "ask".
 
 # SMTP
-MONITOR: True
+MONITOR: False
 MACHINE_ID: DEV
 SEND_POINT: 1,2,100,200
 FROM_EMAIL: 1921761583@qq.com
 TO_EMAIL: v-mujian@microsoft.com
-SENDER_PASSWORD:
+SENDER_PASSWORD: kejomlzvquxtfdfa
 SMTP_SERVER: smtp.qq.com
 
 # Blob storage
-UPLOAD: True
+UPLOAD: False
 ACCOUNT_URL: "https://ufodata.blob.core.windows.net"
 CONTAINER_NAME: "ufodata"
-DATA_SOURCE: qabench
+DATA_SOURCE: local_test

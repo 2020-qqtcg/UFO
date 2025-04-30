@@ -35,6 +35,13 @@ class PlanReader:
 
         return self.plan.get("close", False)
 
+    def get_save_as(self) -> str:
+        """
+        Get save as path
+        :return: save as path.
+        """
+        return self.plan.get("save_as", "")
+
     def get_task(self) -> str:
         """
         Get the task name.
@@ -89,16 +96,17 @@ class PlanReader:
 
     def get_file_path(self):
 
-        file_path = os.path.dirname(os.path.abspath(self.plan_file)).replace(
-            "tasks", "files"
-        )
-        file = os.path.basename(
-            self.plan.get(
-                "object",
-            )
-        )
-
-        return os.path.join(file_path, file)
+        # file_path = os.path.dirname(os.path.abspath(self.plan_file)).replace(
+        #     "tasks", "files"
+        # )
+        # file = os.path.basename(
+        #     self.plan.get(
+        #         "object",
+        #     )
+        # )
+        #
+        # return os.path.join(file_path, file)
+        return self.plan.get("object", "")
 
     def get_support_apps(self) -> List[str]:
         """

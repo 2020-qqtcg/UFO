@@ -20,6 +20,7 @@ from ufo.module.context import ContextNames
 from ufo.module.sessions.plan_reader import PlanReader
 from ufo.trajectory.parser import Trajectory
 from ufo.automator.ui_control.inspector import ControlInspectorFacade
+from ufo.utils.app_safe_closer import save_and_close_app
 
 configs = Config.get_instance().config_data
 
@@ -398,6 +399,7 @@ class FromFileSession(BaseSession):
         self.plan_reader = PlanReader(plan_file)
         self.support_apps = self.plan_reader.get_support_apps()
         self.close = self.plan_reader.get_close()
+        self.save_as = self.plan_reader.get_save_as()
         self.task_name = task.split("/")[1]
         self.object_name = ""
 
@@ -500,7 +502,13 @@ class FromFileSession(BaseSession):
         """
         Terminates specific application processes based on the provided conditions.
         """
-        if self.close:
+        was_closed = False
+
+        # Try safe save
+        if self.save_as:
+            was_closed = save_and_close_app(self.app_name, self.save_as)
+
+        if self.close and not was_closed:
             if self.object_name:
                 for process in psutil.process_iter(["name"]):
                     if process.info["name"] == self.app_name:
