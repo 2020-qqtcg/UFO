@@ -2,9 +2,17 @@
 This guide will help you run the UFO agent on the SpreadsheetBench benchmark.
 
 ## 1. Clone the SpreadsheetBench Repository
+You can clone SpreadsheetBench anywhere.
 ```bash
 git clone https://github.com/RUCKBReasoning/SpreadsheetBench.git
+cd SpreadsheetBench
+conda create -n SpreadsheetBench python=3.10
+# Remove `vllm` from SpreadsheetBench requirements.txt
+pip install -r requirements.txt
 ```
+
+## Install UFO
+Follow [UFO README](https://github.com/2020-qqtcg/UFO/blob/2020qq-tcg/ssb/README.md) configure UFO.
 
 ## 2. Prepare UFO Task Files
 Step 1: Set Output Directory
