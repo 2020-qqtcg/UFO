@@ -54,5 +54,8 @@ Navigate to the evaluation folder inside SpreadsheetBench, then run the evaluati
 
 ```bash
 cd evaluation
+mkdir outputs
 python evaluation.py --model custom --setting custom
 ```
+
+You can find final output results under `evaluation/outputs`
