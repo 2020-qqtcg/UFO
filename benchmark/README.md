@@ -135,7 +135,7 @@ MACHINE_ID: DEV # Will be shown in Email tilte
 SEND_POINT: 1,2 # An email will be sent once when the completed quantity exists in SEND_POINT. SEND_POINT is comma-separated.
 FROM_EMAIL: 1921761583@qq.com # Email send
 TO_EMAIL:  # Email receive
-SENDER_PASSWORD:  # Password or Key used to send email
+SENDER_PASSWORD:  # The email authorization code for the mailbox corresponding to the SMTP_SERVER
 SMTP_SERVER: smtp.qq.com # SMTP server
 
 ```
