@@ -22,7 +22,7 @@ class PlanReader:
         """
 
         self.plan_file = plan_file
-        with open(plan_file, "r") as f:
+        with open(plan_file, encoding='utf-8') as f:
             self.plan = json.load(f)
         self.remaining_steps = self.get_steps()
         self.support_apps = ["WINWORD.EXE", "EXCEL.EXE", "POWERPNT.EXE"]
