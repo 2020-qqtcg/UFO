@@ -4,11 +4,11 @@ This guide will help you run the UFO agent on the SpreadsheetBench benchmark.
 ## 1. Clone the SpreadsheetBench Repository
 You can clone SpreadsheetBench anywhere.
 ```bash
-git clone https://github.com/RUCKBReasoning/SpreadsheetBench.git
-cd SpreadsheetBench
-conda create -n SpreadsheetBench python=3.10
-conda activate SpreadsheetBench
-# Remove `vllm` from SpreadsheetBench requirements.txt
+git clone https://github.com/BraveGroup/SheetCopilot.git
+cd SheetCopilot
+conda create -n SheetCopilot python=3.10
+conda activate SheetCopilot
+# Remove `vllm` from SheetCopilot requirements.txt
 pip install -r requirements.txt
 ```
 
@@ -95,7 +95,7 @@ Then, open `process_scripts.py` and update the configuration section at the top 
 dataset_file_path = r"D:\code\SpreadsheetBench\data\sample_data_200\dataset.json"  # Path to your SpreadsheetBench dataset.json
 input_base_dir = r"D:\code\SpreadsheetBench\data\sample_data_200"  # Directory containing spreadsheet folders (e.g., 'spreadsheet/59196')
 output_dir = r"D:\code\SpreadsheetBench\data\sample_data_200\outputs\custom_custom"  # Output directory for the final .xlsx files
-tasks_dir = r"D:\code\UFO\benchmark\tasks"  # Directory where UFO task files will be saved
+tasks_dir = r"/benchmark/tasks"  # Directory where UFO task files will be saved
 
 # --- End Configuration ---
 ```
