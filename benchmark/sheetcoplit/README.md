@@ -4,11 +4,10 @@ This guide will help you run the UFO agent on the SheetCoplit benchmark.
 ## 1. Clone the SheetCoplit Repository
 You can clone SheetCoplit anywhere.
 ```bash
-git clone https://github.com/RUCKBReasoning/SpreadsheetBench.git
-cd SpreadsheetBench
-conda create -n SpreadsheetBench python=3.10
-conda activate SpreadsheetBench
-# Remove `vllm` from SpreadsheetBench requirements.txt
+git clone https://github.com/BraveGroup/SheetCopilot.git
+cd SheetCoplit
+conda create -n SheetCoplit python=3.10
+conda activate SheetCoplit
 pip install -r requirements.txt
 ```
 
