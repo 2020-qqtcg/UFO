@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-import psutil
+import logging
 import os
 import time
-import logging
+
+import psutil  # For finding Excel PIDs (pip install psutil)
+import win32api  # For sending keystrokes
 
 # Attempt to import Windows-specific libraries
 _WINDOWS_AUTOMATION_ENABLED = False
@@ -664,6 +666,10 @@ def save_and_close_app(app_name: str, save_as_path: str) -> bool:
         #     return False
         return False # Return False if directory doesn't exist (and not created)
 
+    # Clearn dialog
+    close_all_excel_dialogs_fixed()
+
+    time.sleep(5)
     # --- Find Target Process ---
     target_pid = None
     target_pname = None
@@ -735,6 +741,139 @@ def save_and_close_app(app_name: str, save_as_path: str) -> bool:
               return False
 
 
+# Standard dialog window class name
+DIALOG_CLASS_NAME = "#32770"
+
+
+def get_excel_pids():
+    """Gets a list of PIDs for all running EXCEL.EXE processes"""
+    excel_pids = []
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            if proc.info['name'].lower() == 'excel.exe':
+                excel_pids.append(proc.info['pid'])
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            # The process might have ended while we were checking it
+            pass
+    return excel_pids
+
+
+# List of known Excel dialog window class names
+# You can add more class names found through debugging as needed
+KNOWN_EXCEL_DIALOG_CLASS_NAMES = [
+    "#32770",  # Standard Windows dialog class name
+    "bosa_sdm_XL9"  # "Format Cells" dialog class name found from your debug output
+]
+
+# List to store the handles of found Excel dialog windows
+excel_dialog_hwnds = []
+
+
+# (Optional) For debugging: store information of all found Excel process windows
+# debug_excel_windows_info = []
+
+
+def enum_windows_callback(hwnd, excel_pids_param):
+    """
+    Callback function for EnumWindows.
+    Checks if the window is an Excel dialog and adds its handle to the global list.
+    """
+    global excel_dialog_hwnds  # , debug_excel_windows_info
+
+    if not win32gui.IsWindowVisible(hwnd):
+        return True
+
+    try:
+        _, found_pid = win32process.GetWindowThreadProcessId(hwnd)
+    except Exception:
+        return True
+
+    if found_pid in excel_pids_param:
+        try:
+            class_name = win32gui.GetClassName(hwnd)
+            window_text = win32gui.GetWindowText(hwnd)
+            is_enabled = win32gui.IsWindowEnabled(hwnd)
+
+            # (Optional) Record information of all windows belonging to Excel PIDs (for further debugging)
+            # debug_excel_windows_info.append({
+            #     "hwnd": hwnd, "title": window_text, "class": class_name,
+            #     "visible": True, "enabled": is_enabled, "pid": found_pid
+            # })
+
+            # Modified dialog identification logic: check if the class name is in the known list
+            if is_enabled and class_name in KNOWN_EXCEL_DIALOG_CLASS_NAMES:
+                print(f"INFO: Found matching Excel dialog - Title='{window_text}', ClassName='{class_name}', HWND={hwnd}")
+                if hwnd not in excel_dialog_hwnds:
+                    excel_dialog_hwnds.append(hwnd)
+        except Exception:
+            pass  # Skip if there's an error getting window details
+
+    return True
+
+
+def close_all_excel_dialogs_fixed():
+    """Finds and tries to close all Excel interactive dialogs (using updated class name list)"""
+    global excel_dialog_hwnds  # , debug_excel_windows_info
+    excel_dialog_hwnds = []
+    # debug_excel_windows_info = []
+
+    excel_pids = get_excel_pids()
+    if not excel_pids:
+        print("No running Excel processes found.")
+        return
+
+    print(f"Found Excel process PIDs: {excel_pids}")
+
+    print("Enumerating windows...")
+    win32gui.EnumWindows(enum_windows_callback, excel_pids)
+    print("Window enumeration complete.")
+
+    # (Optional) Debug information output
+    # if debug_excel_windows_info:
+    #     print("\n--- DEBUG: Information of all windows belonging to Excel PIDs ---")
+    #     for info in debug_excel_windows_info:
+    #         print(f"  HWND: {info['hwnd']}, Title: '{info['title']}', ClassName: '{info['class']}', "
+    #               f"Enabled: {info['enabled']}, Visible: {info['visible']}, PID: {info['pid']}")
+    #     print("--- END DEBUG ---")
+
+    if not excel_dialog_hwnds:
+        print("\nScript finished. No Excel interactive dialogs found to close based on preset conditions.")
+        print(
+            f"Please ensure the target dialog is open and its class name is included in the script's KNOWN_EXCEL_DIALOG_CLASS_NAMES list (current list: {KNOWN_EXCEL_DIALOG_CLASS_NAMES}).")
+        return
+
+    print(f"\nIdentified {len(excel_dialog_hwnds)} matching dialogs, attempting to close by sending ESC key...")
+
+    closed_count = 0
+    for hwnd_dialog in excel_dialog_hwnds:
+        try:
+            dialog_title_to_close = win32gui.GetWindowText(hwnd_dialog)
+            print(f"  Attempting to close dialog: '{dialog_title_to_close}' (HWND: {hwnd_dialog})")
+
+            try:
+                win32gui.SetForegroundWindow(hwnd_dialog)
+                time.sleep(0.15)
+            except Exception as e_fg:
+                print(f"    WARNING: Failed to set HWND {hwnd_dialog} as foreground window: {e_fg}. Still attempting to send key...")
+
+            win32api.keybd_event(win32con.VK_ESCAPE, 0, 0, 0)
+            time.sleep(0.05)
+            win32api.keybd_event(win32con.VK_ESCAPE, 0, win32con.KEYEVENTF_KEYUP, 0)
+
+            print(f"    Sent ESC key to HWND {hwnd_dialog}.")
+            closed_count += 1
+            time.sleep(0.25)
+
+        except Exception as e_close:
+            print(f"    Error closing dialog HWND {hwnd_dialog}: {e_close}")
+
+    if closed_count > 0:
+        print(f"\nOperation complete. Attempted to close {closed_count} dialogs.")
+    else:
+        print("\nNo dialogs were successfully closed.")
+    print("Please check Excel to confirm if the dialogs are closed.")
+
+
 # ==============================================================================
 # Example Usage (Adjust paths as needed)
 # ==============================================================================
@@ -746,7 +885,7 @@ if __name__ == "__main__":
     target_app_excel = "EXCEL.EXE"
     timestamp = int(time.time())
     # Make sure C:\temp exists or change this path to a valid one on your system
-    excel_save_path = rf"C:\temp\ClosedViaInterface_Excel_{timestamp}.xlsx"
+    excel_save_path = rf"D:\ClosedViaInterface_Excel_{timestamp}.xlsx"
 
     print(f"Attempting to save and close {target_app_excel}...")
     print(f"Target save path: {excel_save_path}")
