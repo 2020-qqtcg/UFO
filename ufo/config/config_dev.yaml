@@ -130,7 +130,7 @@ SAVE_EXPERIENCE: "always_not"  # Whether to save the experience, can be "always"
 # SMTP
 MONITOR: True
 MACHINE_ID: DEV
-SEND_POINT: 50,100,150,200
+SEND_POINT: 1,2,50,100,150,200
 FROM_EMAIL: 2896450802@qq.com
 TO_EMAIL: v-yuhangxie@microsoft.com
 SENDER_PASSWORD: qrxyzzzkbguidgca
