@@ -5,11 +5,12 @@ import re # Import regular expressions for potential filename parsing
 
 # --- Configuration ---
 # PLEASE UPDATE THESE PATHS ACCORDING TO YOUR ENVIRONMENT
-dataset_file_path = r"C:\Users\v-yuhangxie\repos\20250506UIAgentUFO\benchmark\SpreadsheetBench\data\sample_data_200\dataset.json" # Path to your dataset.json file
-input_base_dir = r'C:\Users\v-yuhangxie\repos\20250506UIAgentUFO\benchmark\SpreadsheetBench\data\sample_data_200'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
-output_dir = r'C:\Users\v-yuhangxie\repos\20250506UIAgentUFO\benchmark\SpreadsheetBench\data\sample_data_200\outputs\custom_custom'        # Directory where the final output .xlsx files will be saved
-tasks_dir = r"C:\Users\v-yuhangxie\repos\20250506UIAgentUFO\benchmark\SpreadsheetBench\tasks"
+dataset_file_path = r"C:\Users\v-yuhangxie\repos\UFO\benchmark\SpreadsheetBench\data\all_data_912\all_data_912\dataset.json" # Path to your dataset.json file
+input_base_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/all_data_912'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
+output_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/outputs/custom_custom'        # Directory where the final output .xlsx files will be saved
+
 # --- End Configuration ---
+
 
 PROMPT_FORMAT_SINGLE = """You need to solve the given spreadsheet manipulation question, which contains six types of information:
 - instruction: The question about spreadsheet manipulation.
@@ -34,7 +35,7 @@ answer_position specifies the location where you fill in the answer. Multiple ra
 Do not save the file after execution.
 """
 
-def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_dir):
+def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_dir,start_n,end_n):
     """
     Reads the dataset JSON, finds corresponding Excel files, and generates
     individual JSON files based on the specified rules.
@@ -75,8 +76,10 @@ def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_
     skipped_entries = 0
 
     # Iterate through each entry in the dataset
-    for entry in dataset:
+    for entry in dataset[start_n-1:end_n]:
+        # print(entry)
         try:
+            # print(entry_id)
             entry_id = entry.get('id')
             instruction = entry.get('instruction')
             instruction_type = entry.get('instruction_type')
@@ -164,6 +167,12 @@ def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_
 
 # --- Main execution ---
 if __name__ == "__main__":
+    # start_n从1开始，从start_n~end_n的元素
+    start_n=1
+    end_n=100
+    tasks_dir = f"C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/tasks_912_{start_n}-{end_n}"
+    # 如果该路径不存在，则创建
+    os.makedirs(tasks_dir, exist_ok=True)
     print("Starting dataset processing...")
-    process_dataset(dataset_file_path, input_base_dir, output_dir, tasks_dir)
+    process_dataset(dataset_file_path, input_base_dir, output_dir, tasks_dir,start_n,end_n)
     print("Processing finished.")
