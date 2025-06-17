@@ -42,7 +42,7 @@ def get_completion(
             print_with_color(f"Error: {e}", "red")
             print_with_color("Retrying...", "yellow")
             try_count -= 1
-            time.sleep((20 - try_count) * 5)
+            time.sleep(8)
             continue
 
 
