@@ -5,9 +5,9 @@ import re # Import regular expressions for potential filename parsing
 
 # --- Configuration ---
 # PLEASE UPDATE THESE PATHS ACCORDING TO YOUR ENVIRONMENT
-dataset_file_path = r"C:\Users\v-yuhangxie\repos\UFO\benchmark\SpreadsheetBench\data\all_data_912\all_data_912\dataset.json" # Path to your dataset.json file
-input_base_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/all_data_912'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
-output_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/outputs/custom_custom'        # Directory where the final output .xlsx files will be saved
+dataset_file_path = r"C:\Users\v-yuhangxie\UFO\benchmark\SpreadsheetBench\data\all_data_912\all_data_912\dataset.json" # Path to your dataset.json file
+input_base_dir = 'C:/Users/v-yuhangxie/UFO/benchmark/SpreadsheetBench/data/all_data_912/all_data_912'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
+output_dir = 'C:/Users/v-yuhangxie/UFO/benchmark/SpreadsheetBench/data/all_data_912/outputs/custom_custom'        # Directory where the final output .xlsx files will be saved
 
 # --- End Configuration ---
 
@@ -168,9 +168,9 @@ def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_
 # --- Main execution ---
 if __name__ == "__main__":
     # start_n从1开始，从start_n~end_n的元素
-    start_n=1
-    end_n=100
-    tasks_dir = f"C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/tasks_912_{start_n}-{end_n}"
+    start_n=305
+    end_n=456
+    tasks_dir = f"C:/Users/v-yuhangxie/UFO/benchmark/SpreadsheetBench/tasks_912_{start_n}-{end_n}"
     # 如果该路径不存在，则创建
     os.makedirs(tasks_dir, exist_ok=True)
     print("Starting dataset processing...")
