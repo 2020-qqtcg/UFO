@@ -5,10 +5,17 @@ import re # Import regular expressions for potential filename parsing
 
 # --- Configuration ---
 # PLEASE UPDATE THESE PATHS ACCORDING TO YOUR ENVIRONMENT
+<<<<<<<< HEAD:benchmark/spreadsheetbench_use/process_scripts.py
 dataset_file_path = r"C:\Users\v-yuhangxie\repos\UFO\benchmark\SpreadsheetBench\data\all_data_912\all_data_912\dataset.json" # Path to your dataset.json file
 input_base_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/all_data_912'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
 output_dir = 'C:/Users/v-yuhangxie/repos/UFO/benchmark/SpreadsheetBench/data/all_data_912/outputs/custom_custom'        # Directory where the final output .xlsx files will be saved
 
+========
+dataset_file_path = r"D:\code\SpreadsheetBench\data\sample_data_200\dataset.json" # Path to your dataset.json file
+input_base_dir = r'D:\code\SpreadsheetBench\data\sample_data_200'               # Base directory where spreadsheet folders (like 'spreadsheet/59196') reside
+output_dir = r'D:\code\SpreadsheetBench\data\sample_data_200\outputs\custom_custom'        # Directory where the final output .xlsx files will be saved
+tasks_dir = r"/benchmark/tasks"
+>>>>>>>> 2020qq-tcg/ssb:benchmark/spreadsheetbench/process_scripts.py
 # --- End Configuration ---
 
 

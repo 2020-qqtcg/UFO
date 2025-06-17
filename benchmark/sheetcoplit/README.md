@@ -5,9 +5,16 @@ This guide will help you run the UFO agent on the SheetCoplit benchmark.
 You can clone SheetCoplit anywhere.
 ```bash
 git clone https://github.com/BraveGroup/SheetCopilot.git
+<<<<<<<< HEAD:benchmark/sheetcoplit/README.md
 cd SheetCoplit
 conda create -n SheetCoplit python=3.10
 conda activate SheetCoplit
+========
+cd SheetCopilot
+conda create -n SheetCopilot python=3.10
+conda activate SheetCopilot
+# Remove `vllm` from SheetCopilot requirements.txt
+>>>>>>>> 2020qq-tcg/ssb:benchmark/spreadsheetbench/README.md
 pip install -r requirements.txt
 ```
 
@@ -85,11 +92,24 @@ You may use them to debug, replay, or analyze the agent output.
 Open `process_scripts.py` and update the configuration section at the bottom of the file to match your environment:
 
 ```python
+<<<<<<<< HEAD:benchmark/sheetcoplit/README.md
 # --- 在这里直接修改为你需要的路径 ---
 master_excel_path = r"D:\code\SheetCopilot\dataset\dataset.xlsx"  # The path of dataset.xlsx in SheetCoplit 
 task_sheets_dir = r"D:\code\SheetCopilot\dataset\task_sheets"     # The path of task_sheets in SheetCoplit 
 output_base_dir = r"D:\code\UFO\benchmark\sheetcoplit\tasks" # The path you want to save your result
 # --- 修改结束 ---
+========
+# --- Configuration ---
+
+# PLEASE UPDATE THESE PATHS ACCORDING TO YOUR ENVIRONMENT
+
+dataset_file_path = r"D:\code\SpreadsheetBench\data\sample_data_200\dataset.json"  # Path to your SpreadsheetBench dataset.json
+input_base_dir = r"D:\code\SpreadsheetBench\data\sample_data_200"  # Directory containing spreadsheet folders (e.g., 'spreadsheet/59196')
+output_dir = r"D:\code\SpreadsheetBench\data\sample_data_200\outputs\custom_custom"  # Output directory for the final .xlsx files
+tasks_dir = r"/benchmark/tasks"  # Directory where UFO task files will be saved
+
+# --- End Configuration ---
+>>>>>>>> 2020qq-tcg/ssb:benchmark/spreadsheetbench/README.md
 ```
 Step 2: Generate Task Files
 Run the process_scripts.py script to generate UFO-compatible task files:

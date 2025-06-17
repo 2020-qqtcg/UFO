@@ -20,18 +20,16 @@ html2text==2024.2.26
 pyautogui==0.9.54
 uiautomation==2.0.18
 gradio-client==1.7.1
-##For Qwen
-#dashscope==1.15.0
 ##For removing stopwords
 #nltk==3.8.1
 ##For Gemini
 #google-generativeai==0.7.0
 
-
+numpy<2
 ## If use AAD to authenticate
 azure_identity==1.20.0
 azure-identity-broker==1.2.0
-# azure-storage-blob
+azure-storage-blob
 # jsonschema
 # fuzzywuzzy
 # python-Levenshtein
