@@ -3,6 +3,7 @@
 
 import json
 import os
+import shutil
 import time
 from typing import List
 
@@ -505,10 +506,10 @@ class FromFileSession(BaseSession):
         was_closed = False
 
         # Try safe save
-        if self.save_as:
-            was_closed = save_and_close_app(self.app_name, self.save_as)
+        # if self.save_as:
+        #     was_closed = save_and_close_app(self.app_name, self.save_as)
 
-        if self.close and not was_closed:
+        if self.close:
             if self.object_name:
                 for process in psutil.process_iter(["name"]):
                     if process.info["name"] == self.app_name:
@@ -520,6 +521,21 @@ class FromFileSession(BaseSession):
                     if process.info["name"] in app_names:
                         os.system(f"taskkill /f /im {process.info['name']}")
                         time.sleep(1)
+
+        if self.save_as:
+            # copy result to target
+            source_file = self.plan_reader.get_file_path()
+            target_file = self.save_as
+
+            # Get the directory part of the target file path
+            target_dir = os.path.dirname(target_file)
+            # Create the directory if it does not exist
+            os.makedirs(target_dir, exist_ok=True)
+
+            # Copy the source file to the target file, preserving metadata
+            shutil.copy2(source_file, target_file)
+
+
 
     def setup_application_environment(self):
         """
