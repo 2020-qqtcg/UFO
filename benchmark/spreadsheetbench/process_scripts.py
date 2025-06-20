@@ -30,6 +30,8 @@ Below is the spreadsheet manipulation question you need to solve:
 answer_position: {answer_position}
 
 answer_position specifies the location where you fill in the answer. Multiple ranges are separated by commas (','). Within each range, if there is an exclamation mark ('!'), the part to the left of the '!' indicates the sheet, and the part to the right indicates the range.
+
+Do not save the file after execution.
 """
 
 def process_dataset(dataset_path, base_input_dir, output_base_dir, tasks_output_dir):

@@ -16,8 +16,8 @@ MAXIMIZE_WINDOW: True  # Whether to maximize the application window before the a
 
 JSON_PARSING_RETRY: 3  # The retry times for the json parsing
 
-SAFE_GUARD: True  # Whether to use the safe guard to prevent the model from doing sensitve operations.
-CONTROL_LIST: ["Button", "Edit", "TabItem", "Document", "ListItem", "MenuItem", "ScrollBar", "TreeItem", "Hyperlink", "ComboBox", "RadioButton", "DataItem", "Spinner", "CheckBox"]
+SAFE_GUARD: False  # Whether to use the safe guard to prevent the model from doing sensitve operations.
+CONTROL_LIST: ["Button", "Edit", "TabItem", "Document", "ListItem", "MenuItem", "ScrollBar", "TreeItem", "Hyperlink", "ComboBox", "RadioButton", "Spinner", "CheckBox"]
 # The list of widgets that allowed to be selected, in uia backend, it will be used for filter the control_type, while in win32 backend, it will be used for filter the class_name.
 HISTORY_KEYS: ["Step", "Subtask", "Action", "UserConfirm"]  # The keys of the action history for the next step.
 
@@ -128,12 +128,12 @@ TASK_STATUS: True  # Whether to record the status of the tasks in batch executio
 SAVE_EXPERIENCE: "always_not"  # Whether to save the experience, can be "always" for always save, "always_not" for always not save, "ask" for asking the user to save or not, "auto" for auto save when the evaluation is good. By default, it is "ask".
 
 # SMTP
-MONITOR: False
+MONITOR: True
 MACHINE_ID: DEV
-SEND_POINT: 1,2,100,200
-FROM_EMAIL: 1921761583@qq.com
-TO_EMAIL: v-mujian@microsoft.com
-SENDER_PASSWORD: kejomlzvquxtfdfa
+SEND_POINT: 1,2,50,100,150,200
+FROM_EMAIL: 2896450802@qq.com
+TO_EMAIL: v-yuhangxie@microsoft.com
+SENDER_PASSWORD: qrxyzzzkbguidgca
 SMTP_SERVER: smtp.qq.com
 
 # Blob storage
