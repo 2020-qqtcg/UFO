@@ -33,7 +33,7 @@ def get_completion(
     try_count = 20
     while try_count > 0:
         try:
-            model_name = 'dev-gpt-4o-vision-2024-05-13'
+            model_name = 'gpt-41-longco-2025-04-14'
             responses = send_request_ufo(
                 model_name, messages
             )
