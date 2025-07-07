@@ -257,7 +257,7 @@ class UIABackendStrategy(BackendStrategy):
             )
             for elem in (
                 com_elem_array.GetElement(n)
-                for n in range(min(com_elem_array.Length, 500))
+                for n in range(min(com_elem_array.Length, 1500))
             )
         ]
 
