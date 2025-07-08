@@ -7,12 +7,14 @@ from ufo.utils import print_with_color
 
 from ..config.config import Config
 from .base import BaseService
+from .openai_utils import send_request_ufo
+import time
 
 configs = Config.get_instance().config_data
 
 
 def get_completion(
-    messages, agent: str = "APP", use_backup_engine: bool = True, configs=configs
+        messages, agent: str = "APP", use_backup_engine: bool = True, configs=configs
 ) -> Tuple[str, float]:
     """
     Get completion for the given messages.
@@ -22,10 +24,30 @@ def get_completion(
     :return: A tuple containing the completion response and the cost.
     """
 
-    responses, cost = get_completions(
-        messages, agent=agent, use_backup_engine=use_backup_engine, n=1, configs=configs
-    )
-    return responses[0], cost
+    # responses, cost = get_completions(
+    #     messages, agent=agent, use_backup_engine=use_backup_engine, n=1, configs=configs
+    # )
+    # # print(messages)
+    # return responses[0], cost
+    responses = ""
+    try_count = 20
+    while try_count > 0:
+        try:
+            # dev-gpt-4o-vision-2024-05-13
+            model_name = 'dev-gpt-41-longco-2025-04-14'
+            responses = send_request_ufo(
+                model_name, messages
+            )
+            return responses, 0
+        except Exception as e:
+            print_with_color(f"Error: {e}", "red")
+            print_with_color("Retrying...", "yellow")
+            try_count -= 1
+            time.sleep(8)
+            continue
+
+
+    return responses, 0
 
 
 def get_completions(
