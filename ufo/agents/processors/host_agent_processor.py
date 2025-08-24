@@ -185,17 +185,26 @@ class HostAgentProcessor(BaseProcessor):
 
         retry = 0
         while retry < configs.get("JSON_PARSING_RETRY", 3):
-            # Try to get the response from the LLM. If an error occurs, catch the exception and log the error.
-            self._response, self.cost = self.host_agent.get_response(
-                self._prompt_message, "HOSTAGENT", use_backup_engine=True
-            )
+
 
             try:
+                start_time = time.time()
+                # Try to get the response from the LLM. If an error occurs, catch the exception and log the error.
+                self._response, self.cost,prompt_tokens,completion_tokens = self.host_agent.get_response(
+                    self._prompt_message, "HOSTAGENT", use_backup_engine=True
+                )
                 self.host_agent.response_to_dict(self._response)
+                get_response_time = time.time() - start_time
+                self._memory_data.add_values_from_dict({"get_response_time_true": get_response_time})
+                self._memory_data.add_values_from_dict({"prompt_tokens": prompt_tokens})
+                self._memory_data.add_values_from_dict({"completion_tokens": completion_tokens})
                 break
             except Exception as e:
                 print(f"Error in parsing response into json, retrying: {retry}")
+                print(e)
+                time.sleep(10)
                 retry += 1
+        self._memory_data.add_values_from_dict({"retry": retry})
 
     @BaseProcessor.exception_capture
     @BaseProcessor.method_timer

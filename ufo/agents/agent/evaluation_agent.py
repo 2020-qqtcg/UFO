@@ -108,13 +108,13 @@ class EvaluationAgent(BasicAgent):
         message = self.message_constructor(
             log_path=log_path, request=request, eva_all_screenshots=eva_all_screenshots
         )
-        result, cost = self.get_response(
+        result, cost,total_time_cost,prompt_tokens,completion_tokens = self.get_response_time(
             message=message, namescope="eva", use_backup_engine=True
         )
 
         result = json_parser(result)
 
-        return result, cost
+        return result, cost,total_time_cost,prompt_tokens,completion_tokens
 
     def process_comfirmation(self) -> None:
         """

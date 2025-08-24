@@ -101,6 +101,7 @@ class BaseProcessor(ABC):
             # Step 5: Get the response.
             self.get_response()
 
+
             # Step 6: Update the context.
             self.update_cost()
 

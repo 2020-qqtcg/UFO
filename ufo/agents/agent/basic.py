@@ -161,10 +161,31 @@ class BasicAgent(ABC):
         :param configs: The configurations.
         :return: The response.
         """
-        response_string, cost = llm_call.get_completion(
+        result, cost,prompt_tokens,completion_tokens = llm_call.get_completion(
             message, namescope, use_backup_engine=use_backup_engine, configs=configs
         )
-        return response_string, cost
+        return result, cost,prompt_tokens,completion_tokens
+
+    @classmethod
+    def get_response_time(
+        cls,
+        message: List[dict],
+        namescope: str,
+        use_backup_engine: bool,
+        configs=configs,
+    ) -> str:
+        """
+        Get the response for the prompt.
+        :param message: The message for LLMs.
+        :param namescope: The namescope for the LLMs.
+        :param use_backup_engine: Whether to use the backup engine.
+        :param configs: The configurations.
+        :return: The response.
+        """
+        response_string, cost,time_cost,prompt_tokens,completion_token = llm_call.get_completion_time(
+            message, namescope, use_backup_engine=use_backup_engine, configs=configs
+        )
+        return response_string, cost,time_cost,prompt_tokens,completion_token
 
     @staticmethod
     def response_to_dict(response: str) -> Dict[str, str]:

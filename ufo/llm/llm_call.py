@@ -7,7 +7,7 @@ from ufo.utils import print_with_color
 
 from ..config.config import Config
 from .base import BaseService
-from .openai_utils import send_request_ufo
+from .openai_utils import send_request_ufo,send_request_ufo_o3
 import time
 
 configs = Config.get_instance().config_data
@@ -29,16 +29,70 @@ def get_completion(
     # )
     # # print(messages)
     # return responses[0], cost
+
+    # dev-gpt-4o-vision-2024-05-13
+    try:
+        # model_name = 'dev-gpt-41-longco-2025-04-14'
+        # model_name = 'dev-o3-2025-04-16'
+        model_name = 'dev-gpt-5-reasoning'
+        responses = send_request_ufo_o3(
+                    model_name, messages
+        )
+        result=responses['choices'][0]['message']['content']
+        usage_info = responses['usage']
+
+        prompt_tokens = usage_info['prompt_tokens']
+        completion_tokens = usage_info['completion_tokens']
+        # cost=prompt_tokens*0.002/1000+completion_tokens*0.008/1000
+        # cost = prompt_tokens * 0.01 / 1000 + completion_tokens * 0.04 / 1000
+        cost = prompt_tokens * 0.00125 / 1000 + completion_tokens * 0.01 / 1000
+        return result, cost,prompt_tokens,completion_tokens
+    except Exception as e:
+        raise e
+
+
+
+
+
+
+def get_completion_time(
+        messages, agent: str = "APP", use_backup_engine: bool = True, configs=configs
+) -> Tuple[str, float]:
+    """
+    Get completion for the given messages.
+    :param messages: List of messages to be used for completion.
+    :param agent: Type of agent. Possible values are 'hostagent', 'appagent' or 'backup'.
+    :param use_backup_engine: Flag indicating whether to use the backup engine or not.
+    :return: A tuple containing the completion response and the cost.
+    """
+
+    # responses, cost = get_completions(
+    #     messages, agent=agent, use_backup_engine=use_backup_engine, n=1, configs=configs
+    # )
+    # # print(messages)
+    # return responses[0], cost
     responses = ""
     try_count = 20
     while try_count > 0:
         try:
             # dev-gpt-4o-vision-2024-05-13
-            model_name = 'dev-gpt-41-longco-2025-04-14'
-            responses = send_request_ufo(
+            start_time = time.time()
+            # model_name = 'dev-gpt-41-longco-2025-04-14'
+            # model_name = 'dev-o3-2025-04-16'
+            model_name = 'dev-gpt-5-reasoning'
+            responses = send_request_ufo_o3(
                 model_name, messages
             )
-            return responses, 0
+            result=responses['choices'][0]['message']['content']
+            usage_info = responses['usage']
+
+            prompt_tokens = usage_info['prompt_tokens']
+            completion_tokens = usage_info['completion_tokens']
+            # cost=prompt_tokens*0.002/1000+completion_tokens*0.008/1000
+            # cost = prompt_tokens * 0.01 / 1000 + completion_tokens * 0.04 / 1000
+            cost = prompt_tokens * 0.00125 / 1000 + completion_tokens * 0.01 / 1000
+            total_time_cost = time.time() - start_time
+            return result, cost,total_time_cost,prompt_tokens,completion_tokens
         except Exception as e:
             print_with_color(f"Error: {e}", "red")
             print_with_color("Retrying...", "yellow")
@@ -47,7 +101,7 @@ def get_completion(
             continue
 
 
-    return responses, 0
+    return result, cost,total_time_cost,prompt_tokens,completion_tokens
 
 
 def get_completions(

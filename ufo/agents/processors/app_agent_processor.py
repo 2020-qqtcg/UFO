@@ -1,6 +1,7 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+import time
 import json
 import os
 from dataclasses import asdict, dataclass, field
@@ -122,10 +123,10 @@ class AppAgentProcessor(BaseProcessor):
     _cache_timestamp = 0
 
     def __init__(
-        self,
-        agent: "AppAgent",
-        context: Context,
-        ground_service=Optional[BasicGrounding],
+            self,
+            agent: "AppAgent",
+            context: Context,
+            ground_service=Optional[BasicGrounding],
     ) -> None:
         """
         Initialize the app agent processor.
@@ -269,10 +270,10 @@ class AppAgentProcessor(BaseProcessor):
         self.screenshot_save_path = screenshot_save_path
 
         annotated_screenshot_save_path = (
-            self.log_path + f"action_step{self.session_step}_annotated.png"
+                self.log_path + f"action_step{self.session_step}_annotated.png"
         )
         concat_screenshot_save_path = (
-            self.log_path + f"action_step{self.session_step}_concat.png"
+                self.log_path + f"action_step{self.session_step}_concat.png"
         )
 
         self._memory_data.add_values_from_dict(
@@ -313,7 +314,9 @@ class AppAgentProcessor(BaseProcessor):
 
         # Get API annotation dictionary
         original_control_list = configs.get("CONTROL_LIST", [])
-        configs["CONTROL_LIST"] = ["Button", "Edit", "TabItem", "Document", "ListItem", "MenuItem", "ScrollBar", "TreeItem", "Hyperlink", "ComboBox", "RadioButton", "Spinner", "CheckBox", "DataItem"]
+        configs["CONTROL_LIST"] = ["Button", "Edit", "TabItem", "Document", "ListItem", "MenuItem", "ScrollBar",
+                                   "TreeItem", "Hyperlink", "ComboBox", "RadioButton", "Spinner", "CheckBox",
+                                   "DataItem"]
         api_control_list = self.get_control_list(screenshot_save_path)
         configs["CONTROL_LIST"] = original_control_list
         self._api_annotation_dict = self.photographer.get_annotation_dict(
@@ -343,9 +346,8 @@ class AppAgentProcessor(BaseProcessor):
                 )
 
         if configs.get("SAVE_FULL_SCREEN", False):
-
             desktop_save_path = (
-                self.log_path + f"desktop_action_step{self.session_step}.png"
+                    self.log_path + f"desktop_action_step{self.session_step}.png"
             )
 
             self._memory_data.add_values_from_dict(
@@ -360,11 +362,11 @@ class AppAgentProcessor(BaseProcessor):
         # If the configuration is set to include the last screenshot with selected controls tagged, save the last screenshot.
         if configs.get("INCLUDE_LAST_SCREENSHOT", True):
             last_screenshot_save_path = (
-                self.log_path + f"action_step{self.session_step - 1}.png"
+                    self.log_path + f"action_step{self.session_step - 1}.png"
             )
             last_control_screenshot_save_path = (
-                self.log_path
-                + f"action_step{self.session_step - 1}_selected_controls.png"
+                    self.log_path
+                    + f"action_step{self.session_step - 1}_selected_controls.png"
             )
             self._image_url += [
                 self.photographer.encode_image_from_path(
@@ -512,17 +514,23 @@ class AppAgentProcessor(BaseProcessor):
 
         retry = 0
         while retry < configs.get("JSON_PARSING_RETRY", 3):
-            # Try to get the response from the LLM. If an error occurs, catch the exception and log the error.
-            self._response, self.cost = self.app_agent.get_response(
-                self._prompt_message, "APPAGENT", use_backup_engine=True
-            )
-
             try:
+                start_time = time.time()
+                # Try to get the response from the LLM. If an error occurs, catch the exception and log the error.
+                self._response, self.cost,prompt_tokens,completion_tokens = self.app_agent.get_response(
+                    self._prompt_message, "APPAGENT", use_backup_engine=True
+                )
                 self.app_agent.response_to_dict(self._response)
+                get_response_time = time.time() - start_time
+                self._memory_data.add_values_from_dict({"get_response_time_true": get_response_time})
+                self._memory_data.add_values_from_dict({"prompt_tokens": prompt_tokens})
+                self._memory_data.add_values_from_dict({"completion_tokens": completion_tokens})
                 break
             except Exception as e:
                 print("Error in parsing response: ", e)
+                time.sleep(10)
                 retry += 1
+        self._memory_data.add_values_from_dict({"retry": retry})
 
     @BaseProcessor.exception_capture
     @BaseProcessor.method_timer
@@ -579,7 +587,7 @@ class AppAgentProcessor(BaseProcessor):
             self.status = "FINISH"
 
     def capture_control_screenshot(
-        self, control_selected: Union[UIAWrapper, List[UIAWrapper]], action: OneStepAction = None
+            self, control_selected: Union[UIAWrapper, List[UIAWrapper]], action: OneStepAction = None
     ) -> None:
         """
         Capture the screenshot of the selected control.
@@ -587,7 +595,7 @@ class AppAgentProcessor(BaseProcessor):
         :param action: The action being executed (for API calls).
         """
         control_screenshot_save_path = (
-            self.log_path + f"action_step{self.session_step}_selected_controls.png"
+                self.log_path + f"action_step{self.session_step}_selected_controls.png"
         )
 
         self._memory_data.add_values_from_dict(
@@ -651,7 +659,7 @@ class AppAgentProcessor(BaseProcessor):
             return self._get_excel_single_cell_coordinates(args)
         elif function_name == "reorder_columns":
             return self._get_excel_columns_coordinates(args)
-        
+
         return []
 
     def _get_excel_insert_table_coordinates(self, args: Dict[str, Any]) -> List[Dict[str, float]]:
@@ -664,16 +672,14 @@ class AppAgentProcessor(BaseProcessor):
             start_row = args.get("start_row", 1)
             start_col = args.get("start_col", 1)
             table = args.get("table", [[]])
-            
+
             if not table or not table[0]:
                 return []
-            
+
             # Calculate table end position
             end_row = start_row + len(table) - 1
             end_col = start_col + len(table[0]) - 1
-            
 
-            
             # Reuse existing range coordinate calculation method
             range_args = {
                 "start_row": start_row,
@@ -682,7 +688,7 @@ class AppAgentProcessor(BaseProcessor):
                 "end_col": end_col
             }
             return self._get_excel_range_coordinates(range_args)
-            
+
         except Exception as e:
             print(f"❌ Error calculating insert table coordinates: {e}")
             return []
@@ -698,15 +704,13 @@ class AppAgentProcessor(BaseProcessor):
             start_col = args.get("start_col", 1)
             end_row = args.get("end_row", start_row)
             end_col = args.get("end_col", start_col)
-            
+
             # Handle column letter conversion
             if isinstance(start_col, str):
                 start_col = self._col_letter_to_num(start_col)
             if isinstance(end_col, str):
                 end_col = self._col_letter_to_num(end_col)
-            
 
-            
             # Reuse existing range coordinate calculation method
             range_args = {
                 "start_row": start_row,
@@ -715,7 +719,7 @@ class AppAgentProcessor(BaseProcessor):
                 "end_col": end_col
             }
             return self._get_excel_range_coordinates(range_args)
-            
+
         except Exception as e:
             print(f"❌ Error calculating auto fill coordinates: {e}")
             return []
@@ -729,13 +733,11 @@ class AppAgentProcessor(BaseProcessor):
         try:
             row = args.get("row", 1)
             col = args.get("col", 1)
-            
+
             # Handle column letter conversion
             if isinstance(col, str):
                 col = self._col_letter_to_num(col)
-            
 
-            
             # Reuse existing range coordinate calculation method (range of single cell)
             range_args = {
                 "start_row": row,
@@ -744,7 +746,7 @@ class AppAgentProcessor(BaseProcessor):
                 "end_col": col
             }
             return self._get_excel_range_coordinates(range_args)
-            
+
         except Exception as e:
             print(f"❌ Error calculating single cell coordinates: {e}")
             return []
@@ -758,15 +760,14 @@ class AppAgentProcessor(BaseProcessor):
         """
         try:
             desired_order = args.get("desired_order", [])
-            
+
             if not desired_order:
-        
                 return []
-            
+
             # Use the same logic as API: find first row cell content
             target_columns = []
             first_row_cells = []
-            
+
             # Find all first row cells from _annotation_dict
             for control_label, control_element in (self._annotation_dict or {}).items():
                 try:
@@ -776,24 +777,24 @@ class AppAgentProcessor(BaseProcessor):
                         cell_position = self._infer_cell_position(control_element, "")
                         if cell_position:
                             cell_row, cell_col = cell_position
-                            
+
                             # Only focus on first row cells (column header row)
                             if cell_row == 1:
                                 control_text = getattr(control_element, 'window_text', lambda: '')()
-                                
+
                                 first_row_cells.append({
                                     "col": cell_col,
                                     "text": control_text.strip() if control_text else "",
                                     "element": control_element,
                                     "label": control_label
                                 })
-                                
+
                 except Exception as e:
                     continue
-            
+
             # Sort by column number, simulating API's column traversal logic
             first_row_cells.sort(key=lambda x: x["col"])
-            
+
             # Get actual content of first row cells through Excel COM object
             found_columns = []
             try:
@@ -801,7 +802,7 @@ class AppAgentProcessor(BaseProcessor):
                 excel_com = self.app_agent.Puppeteer.receiver_manager.com_receiver.com_object
                 if excel_com:
                     active_sheet = excel_com.ActiveSheet
-                    
+
                     for cell in first_row_cells:
                         cell_address = cell["text"]  # e.g.: "A1", "B1", "C1"
                         if cell_address:
@@ -837,7 +838,7 @@ class AppAgentProcessor(BaseProcessor):
                                 "column_index": cell["col"]
                             })
                             found_columns.append(f"{cell['text']}(col {cell['col']})")
-                            
+
             except Exception:
                 # Fall back to original logic if COM object access fails
                 for cell in first_row_cells:
@@ -852,7 +853,7 @@ class AppAgentProcessor(BaseProcessor):
                             "column_index": cell["col"]
                         })
                         found_columns.append(f"{cell['text']}(col {cell['col']})")
-            
+
             if target_columns:
                 # Calculate merged rectangle of all target columns (including entire columns, not just first row)
                 # Need to extend to entire visible column area
@@ -860,28 +861,28 @@ class AppAgentProcessor(BaseProcessor):
                     # Find leftmost and rightmost columns
                     min_left = min(col["left"] for col in target_columns)
                     max_right = max(col["right"] for col in target_columns)
-                    
+
                     # Get worksheet layout info to calculate entire column range
                     layout = self._detect_excel_interface_layout()
                     app_rect = self.application_window.rectangle()
-                    
+
                     # Extend to entire column: from worksheet top to bottom of visible area
                     worksheet_top = layout['worksheet_top']
                     worksheet_bottom = min(app_rect.height() - 50, worksheet_top + 600)  # Estimate visible area
-                    
+
                     merged_rect = {
                         "left": min_left - app_rect.left,
-                        "top": float(worksheet_top), 
+                        "top": float(worksheet_top),
                         "right": max_right - app_rect.left,
                         "bottom": float(worksheet_bottom)
                     }
-                    
+
                     return [merged_rect]
-            
+
             # If specific columns cannot be found, use traditional method to estimate entire worksheet area
             layout = self._detect_excel_interface_layout()
             app_rect = self.application_window.rectangle()
-            
+
             # Estimate entire visible worksheet area
             worksheet_rect = {
                 "left": float(layout['worksheet_left']),
@@ -889,9 +890,9 @@ class AppAgentProcessor(BaseProcessor):
                 "right": float(min(app_rect.width() - 50, layout['worksheet_left'] + 800)),
                 "bottom": float(min(app_rect.height() - 50, layout['worksheet_top'] + 600))
             }
-            
+
             return [worksheet_rect]
-            
+
         except Exception as e:
             return []
 
@@ -903,7 +904,6 @@ class AppAgentProcessor(BaseProcessor):
         self._excel_layout_cache.clear()
         self._cache_timestamp = 0
 
-
     def _detect_excel_interface_layout(self) -> Dict[str, int]:
         """
         Dynamically detect Excel interface layout by finding key controls and measuring their positions.
@@ -911,98 +911,98 @@ class AppAgentProcessor(BaseProcessor):
         :return: Dictionary with interface measurements.
         """
         import time
-        
+
         # Check cache first (cache valid for 30 seconds)
         current_time = time.time()
         cache_key = id(self.application_window)
-        
-        if (cache_key in self._excel_layout_cache and 
-            current_time - self._cache_timestamp < 30):
+
+        if (cache_key in self._excel_layout_cache and
+                current_time - self._cache_timestamp < 30):
             return self._excel_layout_cache[cache_key]
-        
+
         try:
             app_rect = self.application_window.rectangle()
             layout = {
-                'worksheet_left': 48,     # Default fallback
-                'worksheet_top': 201,     # Default fallback  
-                'cell_width': 72,         # Default fallback
-                'cell_height': 21         # Default fallback
+                'worksheet_left': 48,  # Default fallback
+                'worksheet_top': 201,  # Default fallback
+                'cell_width': 72,  # Default fallback
+                'cell_height': 21  # Default fallback
             }
-            
+
             # Search for Excel UI elements with more comprehensive criteria
             descendants = self.control_inspector.find_control_elements_in_descendants(
                 self.application_window,
                 control_type_list=["Edit", "ComboBox", "Text", "Button", "Header", "HeaderItem"],
                 class_name_list=[]
             )
-            
+
             name_box_rect = None
             formula_bar_rect = None
             row_headers = []
             column_headers = []
             ribbon_height = 0
-            
+
             print(f"Analyzing {len(descendants)} UI elements for Excel layout detection...")
-            
+
             for control in descendants:
                 control_name = getattr(control.element_info, 'name', '').lower()
                 control_id = getattr(control.element_info, 'automation_id', '')
                 control_class = getattr(control.element_info, 'class_name', '')
                 control_type = getattr(control.element_info, 'control_type', '')
-                
+
                 try:
                     rect = control.rectangle()
-                    
+
                     # Detect name box (cell reference display)
-                    if ('name box' in control_name or 
-                        control_id == 'FormulaBarNameBox' or
-                        control_id == 'NameBox' or
-                        (control_type == 'ComboBox' and rect.top < app_rect.height() * 0.2)):
+                    if ('name box' in control_name or
+                            control_id == 'FormulaBarNameBox' or
+                            control_id == 'NameBox' or
+                            (control_type == 'ComboBox' and rect.top < app_rect.height() * 0.2)):
                         name_box_rect = rect
                         print(f"✓ Found name box: {control_name} ({control_id}), rect: {rect}")
-                    
+
                     # Detect formula bar
-                    elif ('formula bar' in control_name or 
+                    elif ('formula bar' in control_name or
                           'formula' in control_name or
                           control_id == 'FormulaBarEdit' or
                           control_id == 'FormulaEditBox' or
-                          (control_type == 'Edit' and rect.top < app_rect.height() * 0.2 and 
+                          (control_type == 'Edit' and rect.top < app_rect.height() * 0.2 and
                            rect.width() > app_rect.width() * 0.3)):
                         formula_bar_rect = rect
                         print(f"✓ Found formula bar: {control_name} ({control_id}), rect: {rect}")
-                    
+
                     # Detect row headers (numbers on the left side)
-                    elif (control_type == 'HeaderItem' and 
+                    elif (control_type == 'HeaderItem' and
                           rect.left < app_rect.width() * 0.15 and  # Slightly wider tolerance
                           rect.width() < 80 and rect.height() < 60):  # More flexible sizing
                         # Additional validation: should contain numeric text or be at left edge
                         control_text = getattr(control, 'window_text', lambda: '')()
-                        if (control_text.isdigit() or 
-                            rect.left - app_rect.left < 100):  # Very close to left edge
+                        if (control_text.isdigit() or
+                                rect.left - app_rect.left < 100):  # Very close to left edge
                             row_headers.append(rect)
                             print(f"✓ Found row header: {control_text}, rect: {rect}")
-                    
-                    # Detect column headers (letters at the top) 
+
+                    # Detect column headers (letters at the top)
                     elif (control_type == 'HeaderItem' and
                           rect.top < app_rect.height() * 0.4 and  # More tolerance for ribbon variations
                           rect.width() < 250 and rect.height() < 60):
                         # Additional validation: should contain alphabetic text or be at top
                         control_text = getattr(control, 'window_text', lambda: '')()
-                        if (control_text.isalpha() or 
-                            rect.top - app_rect.top < app_rect.height() * 0.3):
+                        if (control_text.isalpha() or
+                                rect.top - app_rect.top < app_rect.height() * 0.3):
                             column_headers.append(rect)
                             print(f"✓ Found column header: {control_text}, rect: {rect}")
-                    
+
                     # Detect ribbon height for better top calculation
-                    elif ('ribbon' in control_name.lower() or 
+                    elif ('ribbon' in control_name.lower() or
                           'tab' in control_name.lower() and rect.top < app_rect.height() * 0.25):
                         ribbon_height = max(ribbon_height, rect.bottom - app_rect.top)
-                        
+
                 except Exception as e:
                     continue  # Skip controls that can't provide rectangle info
-            
+
             print(f"Detection summary: {len(row_headers)} row headers, {len(column_headers)} column headers")
-            
+
             # Calculate worksheet_left dynamically
             if row_headers:
                 # Find the rightmost row header to determine where worksheet starts
@@ -1013,7 +1013,7 @@ class AppAgentProcessor(BaseProcessor):
                 # Fallback: estimate from name box position
                 layout['worksheet_left'] = max(40, name_box_rect.left - app_rect.left)
                 print(f"📏 Calculated worksheet_left from name box: {layout['worksheet_left']}")
-            
+
             # Calculate worksheet_top dynamically
             if column_headers:
                 # Find the bottommost column header to determine where worksheet starts
@@ -1032,7 +1032,7 @@ class AppAgentProcessor(BaseProcessor):
                 # Use ribbon height as reference
                 layout['worksheet_top'] = max(150, ribbon_height + 80)
                 print(f"📏 Calculated worksheet_top from ribbon: {layout['worksheet_top']}")
-            
+
             # Calculate cell dimensions dynamically with improved algorithm
             if len(column_headers) >= 2:
                 # Calculate average column width from column headers
@@ -1047,7 +1047,7 @@ class AppAgentProcessor(BaseProcessor):
                     widths.sort()
                     layout['cell_width'] = int(widths[len(widths) // 2])
                     print(f"📏 Calculated cell_width from column headers (median): {layout['cell_width']}")
-            
+
             if len(row_headers) >= 2:
                 # Calculate average row height from row headers
                 sorted_headers = sorted(row_headers, key=lambda h: h.top)
@@ -1061,20 +1061,20 @@ class AppAgentProcessor(BaseProcessor):
                     heights.sort()
                     layout['cell_height'] = int(heights[len(heights) // 2])
                     print(f"📏 Calculated cell_height from row headers (median): {layout['cell_height']}")
-            
+
             # Apply reasonable bounds to prevent extreme values
             layout['worksheet_left'] = max(15, min(layout['worksheet_left'], 250))
             layout['worksheet_top'] = max(80, min(layout['worksheet_top'], 500))
             layout['cell_width'] = max(25, min(layout['cell_width'], 400))
             layout['cell_height'] = max(12, min(layout['cell_height'], 120))
-            
+
             # Cache the result
             self._excel_layout_cache[cache_key] = layout
             self._cache_timestamp = current_time
-            
+
             print(f"🎯 Final Excel layout detected: {layout}")
             return layout
-            
+
         except Exception as e:
             print(f"❌ Failed to detect Excel layout dynamically, using defaults: {e}")
             # Return conservative default values if detection fails
@@ -1093,15 +1093,15 @@ class AppAgentProcessor(BaseProcessor):
         """
         Calculate screen coordinates for Excel range selection using hybrid approach.
         Prioritize annotation_dict-based precise method with landmark detection as fallback.
-        
+
         Working principle example:
         1. API call: select_table_range(start_row=1, start_col=1, end_row=3, end_col=2)  # A1:B3
-        2. Search from _annotation_dict: 
+        2. Search from _annotation_dict:
            - Find controls 174 (A1), 175 (A2), 176 (A3), 189 (B1), 190 (B2), 191 (B3)
         3. Get real rectangle coordinates of each cell
         4. Calculate merged rectangle: minimum bounding box of all found cells
         5. Return precise range coordinates for screenshot marking
-        
+
         :param args: The arguments from select_table_range API call.
         :return: List of coordinate dictionaries.
         """
@@ -1112,17 +1112,18 @@ class AppAgentProcessor(BaseProcessor):
             end_row = args.get("end_row", start_row)
             end_col = args.get("end_col", start_col)
 
-            print(f"🎯 Calculating coordinates for Excel range {self._col_num_to_letter(start_col)}{start_row}:{self._col_num_to_letter(end_col)}{end_row}")
+            print(
+                f"🎯 Calculating coordinates for Excel range {self._col_num_to_letter(start_col)}{start_row}:{self._col_num_to_letter(end_col)}{end_row}")
 
             # Method 1 (Priority): Precise detection based on _annotation_dict
             range_cells = self._get_cells_in_range_from_annotation(start_row, start_col, end_row, end_col)
-            
+
             if range_cells:
                 # If cells in range are found, calculate their merged rectangle
                 merged_rect = self._calculate_merged_rectangle(range_cells)
                 if merged_rect:
                     print(f"✅ Using annotation-based coordinates: {merged_rect}")
-                    
+
                     # Convert to relative coordinates of application window
                     app_rect = self.application_window.rectangle()
                     relative_rect = {
@@ -1131,28 +1132,30 @@ class AppAgentProcessor(BaseProcessor):
                         "right": merged_rect["right"] - app_rect.left,
                         "bottom": merged_rect["bottom"] - app_rect.top
                     }
-                    
+
                     # Ensure coordinates are within window bounds
                     relative_rect["left"] = max(0, min(relative_rect["left"], app_rect.width() - 1))
                     relative_rect["top"] = max(0, min(relative_rect["top"], app_rect.height() - 1))
-                    relative_rect["right"] = max(relative_rect["left"] + 1, min(relative_rect["right"], app_rect.width()))
-                    relative_rect["bottom"] = max(relative_rect["top"] + 1, min(relative_rect["bottom"], app_rect.height()))
-                    
+                    relative_rect["right"] = max(relative_rect["left"] + 1,
+                                                 min(relative_rect["right"], app_rect.width()))
+                    relative_rect["bottom"] = max(relative_rect["top"] + 1,
+                                                  min(relative_rect["bottom"], app_rect.height()))
+
                     return [relative_rect]
 
             # Method 2 (Fallback): Traditional method based on landmark detection
             print("⚠️ Falling back to landmark-based coordinate calculation")
             layout = self._detect_excel_interface_layout()
-            
+
             # Calculate the range coordinates relative to the Excel worksheet area
             left = layout['worksheet_left'] + (start_col - 1) * layout['cell_width']
             top = layout['worksheet_top'] + (start_row - 1) * layout['cell_height']
             right = layout['worksheet_left'] + end_col * layout['cell_width']
             bottom = layout['worksheet_top'] + end_row * layout['cell_height']
-            
+
             # Get application window rectangle for bounds checking
             app_rect = self.application_window.rectangle()
-            
+
             # Ensure coordinates are within window bounds
             left = max(0, min(left, app_rect.width() - 1))
             top = max(0, min(top, app_rect.height() - 1))
@@ -1168,10 +1171,9 @@ class AppAgentProcessor(BaseProcessor):
 
             print(f"📍 Using landmark-based coordinates: {fallback_rect}")
 
-
             # Return in the format expected by capture_from_adjusted_coords
             return [fallback_rect]
-            
+
         except Exception as e:
             print(f"❌ Error calculating Excel range coordinates: {e}")
             return []
@@ -1235,7 +1237,7 @@ class AppAgentProcessor(BaseProcessor):
             UserConfirm=(
                 "Yes"
                 if self.status.upper()
-                == self._agent_status_manager.CONFIRM.value.upper()
+                   == self._agent_status_manager.CONFIRM.value.upper()
                 else None
             ),
         )
@@ -1323,7 +1325,6 @@ class AppAgentProcessor(BaseProcessor):
         screenshot_saving = self._response_json.get("SaveScreenshot", {})
 
         if screenshot_saving.get("save", False):
-
             screenshot_save_path = self.log_path + f"action_step{self.session_step}.png"
             metadata = {
                 "screenshot application": self.context.get(
@@ -1344,7 +1345,7 @@ class AppAgentProcessor(BaseProcessor):
         self.app_agent.Puppeteer.save_to_xml(xml_save_path)
 
     def get_filtered_annotation_dict(
-        self, annotation_dict: Dict[str, UIAWrapper], configs: Dict[str, Any] = configs
+            self, annotation_dict: Dict[str, UIAWrapper], configs: Dict[str, Any] = configs
     ) -> Dict[str, UIAWrapper]:
         """
         Get the filtered annotation dictionary.
@@ -1416,11 +1417,12 @@ class AppAgentProcessor(BaseProcessor):
 
         return filtered_annotation_dict
 
-    def _get_cells_in_range_from_annotation(self, start_row: int, start_col: int, end_row: int, end_col: int) -> List[Dict[str, float]]:
+    def _get_cells_in_range_from_annotation(self, start_row: int, start_col: int, end_row: int, end_col: int) -> List[
+        Dict[str, float]]:
         """
         Find all cell controls within the specified range from _annotation_dict and return their rectangle information.
         This method is more accurate than landmark detection because it directly uses visual recognition results.
-        
+
         :param start_row: Starting row number (1-based)
         :param start_col: Starting column number (1-based)
         :param end_row: Ending row number (1-based)
@@ -1430,34 +1432,34 @@ class AppAgentProcessor(BaseProcessor):
         if not self._api_annotation_dict:
             print("⚠️ No annotation dictionary available for cell range detection")
             return []
-        
+
         range_cells = []
         found_cells_info = []
-        
-        print(f"🔍 Looking for cells in range {self._col_num_to_letter(start_col)}{start_row}:{self._col_num_to_letter(end_col)}{end_row}")
-        
+
+        print(
+            f"🔍 Looking for cells in range {self._col_num_to_letter(start_col)}{start_row}:{self._col_num_to_letter(end_col)}{end_row}")
+
         # Iterate through all recognized controls
         for control_label, control_element in self._api_annotation_dict.items():
             try:
                 # Get control text content and position information
                 control_text = getattr(control_element, 'window_text', lambda: '')()
                 control_type = getattr(control_element.element_info, 'control_type', '')
-                
+
                 # Check if this is a cell type control
                 if self._is_cell_control(control_element, control_text):
                     # Try to infer cell position from control location
                     cell_position = self._infer_cell_position(control_element, control_text)
                     cell_row, cell_col = cell_position if cell_position else (None, None)
-                    
+
                     # Check if within target range
                     if (cell_row is not None and cell_col is not None and
-                        start_row <= cell_row <= end_row and 
-                        start_col <= cell_col <= end_col):
-                        
+                            start_row <= cell_row <= end_row and
+                            start_col <= cell_col <= end_col):
                         rect = control_element.rectangle()
                         cell_info = {
                             "left": float(rect.left),
-                            "top": float(rect.top), 
+                            "top": float(rect.top),
                             "right": float(rect.right),
                             "bottom": float(rect.bottom),
                             "row": float(cell_row),
@@ -1467,18 +1469,18 @@ class AppAgentProcessor(BaseProcessor):
                         }
                         range_cells.append(cell_info)
                         found_cells_info.append(f"{self._col_num_to_letter(cell_col)}{cell_row}({control_label})")
-                        
+
             except Exception as e:
                 continue  # Skip controls that cannot be processed
-        
+
         if found_cells_info:
-            print(f"✅ Found {len(range_cells)} cells in range: {', '.join(found_cells_info[:10])}" + 
-                  (f" and {len(found_cells_info)-10} more..." if len(found_cells_info) > 10 else ""))
+            print(f"✅ Found {len(range_cells)} cells in range: {', '.join(found_cells_info[:10])}" +
+                  (f" and {len(found_cells_info) - 10} more..." if len(found_cells_info) > 10 else ""))
         else:
             print("❌ No cells found in the specified range from annotation dictionary")
-            
+
         return range_cells
-    
+
     def _is_cell_control(self, control_element, control_text: str) -> bool:
         """
         Determine if a control is a cell control
@@ -1487,20 +1489,20 @@ class AppAgentProcessor(BaseProcessor):
             control_type = getattr(control_element.element_info, 'control_type', '')
             control_class = getattr(control_element.element_info, 'class_name', '')
             source = getattr(control_element.element_info, 'source', '')
-            
+
             # Common cell control characteristics
             cell_indicators = [
                 'cell' in control_type.lower(),
-                'cell' in control_class.lower(), 
+                'cell' in control_class.lower(),
                 source == 'grounding',  # Virtual controls from visual recognition
                 control_type in ['Edit', 'Text', 'DataItem'],  # Common cell control types
             ]
-            
+
             return any(cell_indicators)
-            
+
         except Exception:
             return False
-    
+
     def _infer_cell_position(self, control_element, control_text: str) -> Optional[tuple]:
         """
         Infer the row and column position of a control in Excel
@@ -1509,7 +1511,7 @@ class AppAgentProcessor(BaseProcessor):
         try:
             # First try to get cell address from window_text
             actual_text = getattr(control_element, 'window_text', lambda: '')()
-            
+
             # Method 1: If control text is in cell address format (e.g., "A1", "B5")
             text_to_parse = actual_text or control_text
             if text_to_parse and len(text_to_parse) <= 10:  # Reasonable cell address length
@@ -1521,13 +1523,13 @@ class AppAgentProcessor(BaseProcessor):
                     col_num = self._col_letter_to_num(col_letter)
                     # Note: Use parsed row and column numbers directly, no adjustment needed
                     return (int(row_num), col_num)
-            
+
             # Method 2: Infer based on control's relative position on screen (requires landmark info)
             return self._infer_position_from_coordinates(control_element)
-            
+
         except Exception:
             return None
-    
+
     def _infer_position_from_coordinates(self, control_element) -> Optional[tuple]:
         """
         Infer Excel row and column position based on control's screen coordinates
@@ -1537,30 +1539,30 @@ class AppAgentProcessor(BaseProcessor):
             # Use previous landmark detection as fallback
             layout = self._detect_excel_interface_layout()
             rect = control_element.rectangle()
-            
+
             # Calculate offset relative to worksheet start position
             app_rect = self.application_window.rectangle()
             relative_left = rect.left - app_rect.left - layout['worksheet_left']
             relative_top = rect.top - app_rect.top - layout['worksheet_top']
-            
+
             # Calculate row and column numbers (1-based)
             if relative_left >= 0 and relative_top >= 0:
                 col = int(relative_left // layout['cell_width']) + 1
                 row = int(relative_top // layout['cell_height']) + 1
                 return (row, col)
-                
+
         except Exception:
             pass
-            
+
         return None
-    
+
     def _col_letter_to_num(self, col_letter: str) -> int:
         """Convert column letter to number (A=1, B=2, ..., Z=26, AA=27, ...)"""
         num = 0
         for char in col_letter:
             num = num * 26 + (ord(char) - ord('A') + 1)
         return num
-    
+
     def _col_num_to_letter(self, col_num: int) -> str:
         """Convert column number to letter (1=A, 2=B, ..., 26=Z, 27=AA, ...)"""
         result = ""
@@ -1569,26 +1571,26 @@ class AppAgentProcessor(BaseProcessor):
             result = chr(col_num % 26 + ord('A')) + result
             col_num //= 26
         return result
-    
+
     def _calculate_merged_rectangle(self, cells_info: List[Dict[str, float]]) -> Dict[str, float]:
         """
         Calculate merged rectangle area for multiple cells
         """
         if not cells_info:
             return {}
-        
+
         # Find boundaries of all cells
         min_left = min(cell["left"] for cell in cells_info)
-        min_top = min(cell["top"] for cell in cells_info) 
+        min_top = min(cell["top"] for cell in cells_info)
         max_right = max(cell["right"] for cell in cells_info)
         max_bottom = max(cell["bottom"] for cell in cells_info)
-        
+
         merged_rect = {
             "left": min_left,
             "top": min_top,
-            "right": max_right, 
+            "right": max_right,
             "bottom": max_bottom
         }
-        
+
         print(f"📐 Merged rectangle calculated: {merged_rect}")
         return merged_rect

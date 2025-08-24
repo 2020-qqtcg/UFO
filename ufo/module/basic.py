@@ -654,6 +654,7 @@ class BaseSession(ABC):
         """
         Evaluate the session.
         """
+
         utils.print_with_color("Evaluating the session...", "yellow")
 
         is_visual = configs.get("EVALUATION_AGENT", {}).get("VISUAL_MODE", True)
@@ -671,20 +672,21 @@ class BaseSession(ABC):
 
         # Evaluate the session, first use the default setting, if failed, then disable the screenshot evaluation.
         try:
-            result, cost = evaluator.evaluate(
+            result, cost,total_time_cost,prompt_tokens,completion_tokens= evaluator.evaluate(
                 request=requests,
                 log_path=self.log_path,
                 eva_all_screenshots=configs.get("EVA_ALL_SCREENSHOTS", True),
             )
         except Exception as e:
-            result, cost = evaluator.evaluate(
+            result, cost ,total_time_cost,prompt_tokens,completion_tokens= evaluator.evaluate(
                 request=requests,
                 log_path=self.log_path,
                 eva_all_screenshots=False,
             )
 
+
         # Add additional information to the evaluation result.
-        additional_info = {"level": "session", "request": requests, "id": 0}
+        additional_info = {"level": "session", "request": requests, "id": 0,"cost":cost,"total_time_cost":total_time_cost,"prompt_tokens":prompt_tokens,"completion_token":completion_tokens}
         result.update(additional_info)
 
         self.results = result
