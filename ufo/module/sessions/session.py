@@ -63,6 +63,13 @@ class SessionFactory:
                 return [
                     FromFileSession(task, plan, configs.get("EVA_SESSION", False), id=0)
                 ]
+        elif mode == "batch_normal_operator":
+            if self.is_folder(plan):
+                return self.create_sessions_in_batch_operator(task, plan)
+            else:
+                return [
+                    FromFileOperatorSession(task, plan, configs.get("EVA_SESSION", False), id=0)
+                ]
         elif mode == "operator":
             return [
                 OpenAIOperatorSession(
@@ -124,6 +131,46 @@ class SessionFactory:
 
         sessions = [
             FromFileSession(
+                f"{task}/{file_name}",
+                plan_file,
+                configs.get("EVA_SESSION", False),
+                id=i,
+            )
+            for i, (file_name, plan_file) in enumerate(zip(file_names, plan_files))
+            if file_name not in is_done_files
+        ]
+
+        return sessions
+
+    def create_sessions_in_batch_operator(self, task: str, plan: str) -> List[BaseSession]:
+        """
+        Create a follower session.
+        :param task: The name of current task.
+        :param plan: The path folder of all plan files.
+        :return: The list of created follower sessions.
+        """
+        is_record = configs.get("TASK_STATUS", True)
+        plan_files = self.get_plan_files(plan)
+        file_names = [self.get_file_name_without_extension(f) for f in plan_files]
+        is_done_files = []
+        if is_record:
+            file_path = configs.get(
+                "TASK_STATUS_FILE",
+                os.path.join(os.path.dirname(plan), "tasks_status.json"),
+            )
+            if not os.path.exists(file_path):
+                self.task_done = {f: False for f in file_names}
+                json.dump(
+                    self.task_done,
+                    open(file_path, "w"),
+                    indent=4,
+                )
+            else:
+                self.task_done = json.load(open(file_path, "r"))
+                is_done_files = [f for f in file_names if self.task_done.get(f, False)]
+
+        sessions = [
+            FromFileOperatorSession(
                 f"{task}/{file_name}",
                 plan_file,
                 configs.get("EVA_SESSION", False),
@@ -570,6 +617,19 @@ class FromFileSession(BaseSession):
                 indent=4,
             )
 
+class FromFileOperatorSession(Session):
+    """
+    A session for FromFileOperator.
+    """
+    
+    
+    def _init_context(self) -> None:
+        """
+        Initialize the context.
+        """
+        super()._init_context()
+        
+        self.context.set(ContextNames.MODE, "batch_normal_operator")
 
 class OpenAIOperatorSession(Session):
     """
