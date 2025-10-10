@@ -1,0 +1,62 @@
+{
+  "Content Editing": [
+    "add",
+    "edit",
+    "delete",
+    "set",
+    "copy",
+    "replace",
+    "autofill",
+    "create"
+  ],
+  "Data Structuring": [
+    "sort",
+    "filter",
+    "merge",
+    "group",
+    "move",
+    "split",
+    "ungroup"
+  ],
+  "View Management": [
+    "format",
+    "view",
+    "hide",
+    "freeze",
+    "expand",
+    "unhide",
+    "unfreeze"
+  ],
+  "Data Analysis": [
+    "calculate",
+    "check",
+    "analyze",
+    "extract",
+    "summarize",
+    "translate",
+    "compare",
+    "convert",
+    "optimize"
+  ],
+  "Navigation": [
+    "access",
+    "select",
+    "find",
+    "switch"
+  ],
+  "Application Control": [
+    "enable",
+    "disable",
+    "protect",
+    "record",
+    "assign"
+  ],
+  "Data Integration": [
+    "save",
+    "import",
+    "share"
+  ],
+  "Execution": [
+    "run"
+  ]
+}

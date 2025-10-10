@@ -1,0 +1,62 @@
+{
+  "Document Hierarchy": [
+    "workbook",
+    "worksheet",
+    "tab"
+  ],
+  "Grid Components": [
+    "column",
+    "cell",
+    "row",
+    "range"
+  ],
+  "Structured Data Objects": [
+    "table",
+    "header",
+    "outline",
+    "group"
+  ],
+  "Cell Content and Annotations": [
+    "formula",
+    "data",
+    "comment",
+    "symbol",
+    "link",
+    "footnote"
+  ],
+  "Data Querying and Filtering": [
+    "query",
+    "filter",
+    "slicer"
+  ],
+  "Automation and Connectivity": [
+    "script",
+    "external data source"
+  ],
+  "Visualizations and Inserted Objects": [
+    "chart",
+    "button",
+    "shape",
+    "object"
+  ],
+  "Application Window and View": [
+    "window",
+    "view",
+    "ruler",
+    "pane"
+  ],
+  "UI Controls and Commands": [
+    "tool",
+    "ribbon",
+    "bar",
+    "list",
+    "menu"
+  ],
+  "Other": [
+    "setting",
+    "file",
+    "page break",
+    "signature",
+    "formatting"
+  ]
+}

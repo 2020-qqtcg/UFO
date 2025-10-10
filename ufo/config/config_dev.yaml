@@ -50,6 +50,13 @@ FOLLOWERAHENT_PROMPT: "ufo/prompts/share/base/app_agent.yaml"  # The prompt for 
 
 EVALUATION_PROMPT: "ufo/prompts/evaluation/evaluate.yaml"  # The prompt for the evaluation
 
+TUTORIAL_PROMPT: "ufo/prompts/gen/tutorial_gen.yaml" # The prompt for generation tutorial
+DEMO_PROMPT: "ufo/prompts/gen/demo_gen.yaml" # The prompt for demo generation
+DEMO_PROMPT_JUDGE: "ufo/prompts/gen/demo_judge_quality.yaml"
+DEMO_PROMPT_VIDEO: "ufo/prompts/gen/demo_gen_video.yaml"
+DEMO_PROMPT_DOCUMENT: "ufo/prompts/gen/demo_gen_document.yaml"
+DEMO_PROMPT_TOPIC: "ufo/prompts/gen/demo_topic.yaml"
+
 HOSTAGENT_EXAMPLE_PROMPT: "ufo/prompts/examples/{mode}/host_agent_example.yaml"  # The prompt for the app selection
 # Lite version: "ufo/prompts/examples/lite/{mode}/host_agent_example.yaml"
 APPAGENT_EXAMPLE_PROMPT: "ufo/prompts/examples/{mode}/app_agent_example.yaml"  # The prompt for the action selection
@@ -73,7 +80,7 @@ INPUT_TEXT_INTER_KEY_PAUSE: 0.05 # The pause time between each key press in seco
 
 
 ## APIs related
-USE_APIS: True  # Whether to use the API
+USE_APIS: False  # Whether to use the API
 APP_API_PROMPT_ADDRESS: {
     "WINWORD.EXE": "ufo/prompts/apps/word/api.yaml",
     "EXCEL.EXE": "ufo/prompts/apps/excel/api.yaml",
@@ -130,7 +137,7 @@ SAVE_EXPERIENCE: "always_not"  # Whether to save the experience, can be "always"
 # SMTP
 MONITOR: True
 MACHINE_ID: DEV
-SEND_POINT: 1,2,50,100,150,200
+SEND_POINT: 1,2,5,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200
 FROM_EMAIL: 2896450802@qq.com
 TO_EMAIL: v-yuhangxie@microsoft.com
 SENDER_PASSWORD: qrxyzzzkbguidgca

@@ -1,0 +1,56 @@
+{
+    "$defs": {
+        "ScoreWithReason": {
+            "description": "Represents a rating item that includes a score and a reason.",
+            "properties": {
+                "score": {
+                    "description": "A score from 1 to 5.",
+                    "maximum": 5,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "reason": {
+                    "description": "The specific reason for the given score.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "score",
+                "reason"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "description": "Defines a standardized JSON output format where each rating dimension\nincludes a score and a reason.",
+    "properties": {
+        "clarity": {
+            "$ref": "#/$defs/ScoreWithReason"
+        },
+        "conciseness": {
+            "$ref": "#/$defs/ScoreWithReason"
+        },
+        "correctness": {
+            "$ref": "#/$defs/ScoreWithReason"
+        },
+        "completeness": {
+            "$ref": "#/$defs/ScoreWithReason"
+        },
+        "sequential_order": {
+            "$ref": "#/$defs/ScoreWithReason"
+        },
+        "text-image_mapping": {
+            "$ref": "#/$defs/ScoreWithReason"
+        }
+    },
+    "required": [
+        "clarity",
+        "conciseness",
+        "correctness",
+        "completeness",
+        "sequential_order",
+        "text-image_mapping"
+    ],
+    "type": "object",
+    "additionalProperties": false
+}

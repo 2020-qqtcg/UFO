@@ -1,0 +1,200 @@
+[
+    {
+        "category": "Data Analysis",
+        "avg_total_money": 0.49997504431372547,
+        "items": [
+            {
+                "item": "convert",
+                "avg_total_money": 1.292962,
+                "category": "Data Analysis"
+            },
+            {
+                "item": "check",
+                "avg_total_money": 0.2517024705882353,
+                "category": "Data Analysis"
+            },
+            {
+                "item": "extract",
+                "avg_total_money": 0.23056866666666667,
+                "category": "Data Analysis"
+            },
+            {
+                "item": "calculate",
+                "avg_total_money": 0.22466704,
+                "category": "Data Analysis"
+            }
+        ]
+    },
+    {
+        "category": "Content Editing",
+        "avg_total_money": 0.3308141878489327,
+        "items": [
+            {
+                "item": "copy",
+                "avg_total_money": 0.5011990000000001,
+                "category": "Content Editing"
+            },
+            {
+                "item": "delete",
+                "avg_total_money": 0.35756910344827586,
+                "category": "Content Editing"
+            },
+            {
+                "item": "add",
+                "avg_total_money": 0.3059799310344828,
+                "category": "Content Editing"
+            },
+            {
+                "item": "edit",
+                "avg_total_money": 0.2576533333333333,
+                "category": "Content Editing"
+            },
+            {
+                "item": "set",
+                "avg_total_money": 0.23166957142857145,
+                "category": "Content Editing"
+            }
+        ]
+    },
+    {
+        "category": "Data Integration",
+        "avg_total_money": 0.3080531111111111,
+        "items": [
+            {
+                "item": "save",
+                "avg_total_money": 0.3080531111111111,
+                "category": "Data Integration"
+            }
+        ]
+    },
+    {
+        "category": "Application Control",
+        "avg_total_money": 0.28889978125,
+        "items": [
+            {
+                "item": "protect",
+                "avg_total_money": 0.337386,
+                "category": "Application Control"
+            },
+            {
+                "item": "record",
+                "avg_total_money": 0.31739399999999995,
+                "category": "Application Control"
+            },
+            {
+                "item": "enable",
+                "avg_total_money": 0.279120125,
+                "category": "Application Control"
+            },
+            {
+                "item": "disable",
+                "avg_total_money": 0.221699,
+                "category": "Application Control"
+            }
+        ]
+    },
+    {
+        "category": "Data Structuring",
+        "avg_total_money": 0.236354094017094,
+        "items": [
+            {
+                "item": "sort",
+                "avg_total_money": 0.29690377777777777,
+                "category": "Data Structuring"
+            },
+            {
+                "item": "group",
+                "avg_total_money": 0.24735800000000002,
+                "category": "Data Structuring"
+            },
+            {
+                "item": "ungroup",
+                "avg_total_money": 0.222812,
+                "category": "Data Structuring"
+            },
+            {
+                "item": "filter",
+                "avg_total_money": 0.22216569230769231,
+                "category": "Data Structuring"
+            },
+            {
+                "item": "merge",
+                "avg_total_money": 0.192531,
+                "category": "Data Structuring"
+            }
+        ]
+    },
+    {
+        "category": "Execution",
+        "avg_total_money": 0.23057799999999998,
+        "items": [
+            {
+                "item": "run",
+                "avg_total_money": 0.23057799999999998,
+                "category": "Execution"
+            }
+        ]
+    },
+    {
+        "category": "View Management",
+        "avg_total_money": 0.21923010299455536,
+        "items": [
+            {
+                "item": "format",
+                "avg_total_money": 0.271266275862069,
+                "category": "View Management"
+            },
+            {
+                "item": "hide",
+                "avg_total_money": 0.26078049999999997,
+                "category": "View Management"
+            },
+            {
+                "item": "expand",
+                "avg_total_money": 0.230766,
+                "category": "View Management"
+            },
+            {
+                "item": "freeze",
+                "avg_total_money": 0.229141,
+                "category": "View Management"
+            },
+            {
+                "item": "view",
+                "avg_total_money": 0.17869284210526318,
+                "category": "View Management"
+            },
+            {
+                "item": "unfreeze",
+                "avg_total_money": 0.144734,
+                "category": "View Management"
+            }
+        ]
+    },
+    {
+        "category": "Navigation",
+        "avg_total_money": 0.2011740012544803,
+        "items": [
+            {
+                "item": "find",
+                "avg_total_money": 0.2374423333333333,
+                "category": "Navigation"
+            },
+            {
+                "item": "access",
+                "avg_total_money": 0.2122878494623656,
+                "category": "Navigation"
+            },
+            {
+                "item": "select",
+                "avg_total_money": 0.1832556,
+                "category": "Navigation"
+            },
+            {
+                "item": "switch",
+                "avg_total_money": 0.17171022222222224,
+                "category": "Navigation"
+            }
+        ]
+    }
+]

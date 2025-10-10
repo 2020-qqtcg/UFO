@@ -182,6 +182,39 @@ def send_request_ufo_o3(model_name, message):
     # print(result)
     return response
 
+def send_request_ufo_cost(model_name, message,schema=None):
+    request_data = {
+            "messages":message ,
+            "temperature": 0.01,
+            "top_p": 0.95,
+            "max_completion_tokens": 4096
+    }
+    if schema:
+        request_data["response_format"] = {
+            "type": "json_schema",
+            "json_schema": {
+                "name": "SampleStructureObject",
+                "strict": True,
+                "schema": schema
+            }
+        }
+
+    # Available models are listed here: https://eng.ms/docs/experiences-devices/m365-core/microsoft-search-assistants-intelligence-msai/substrate-intelligence/llm-api/llm-api-partner-docs/available-models/available-models
+    time_start = time.time()
+    response = llm_client.send_request(model_name, request_data)
+    result=response['choices'][0]['message']['content']
+    time_end = time.time()
+    time_taken_seconds = time_end - time_start
+
+    usage_info = response['usage']
+
+    prompt_tokens = usage_info['prompt_tokens']
+    completion_tokens = usage_info['completion_tokens']
+    cost = prompt_tokens * 0.002 / 1000 + completion_tokens * 0.008 / 1000
+    # print(f"LLM Time taken: {time_end - time_start}")
+    # print(result)
+    return result,prompt_tokens,completion_tokens,cost,time_taken_seconds
+
 # prompt = "What’s in this image?"
 # model_name = 'dev-gpt-45-preview'
 # model_name = 'gpt-4o-vision-2024-05-13'

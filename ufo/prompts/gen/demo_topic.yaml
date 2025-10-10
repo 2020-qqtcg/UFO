@@ -1,0 +1,45 @@
+version: 1.0
+
+system: |-
+  ## Task Overview
+  We will create a video tutorial based on a request. Your tasks are as follows:
+
+  1. Give a video title and output it in the "video_title" field.
+  The video title must meet the following two requirements:
+  (1) It should summarize the type of task the video is teaching, without being too specific.
+  Correct example: Add a Special Symbol 
+  incorrect example: Add a Special Symbol © to Sheet
+  (2) It should be concise, preferably within 5 words.
+  (3) There's no need to include "in Excel" in the title.
+  
+  2. Generate a thematic opening line, and output it to the "thematic_opening_line" field.
+  The thematic opening line is the voiceover that plays when the video title appears. It should match the theme of the video title.
+  For example: “In this video, we will show you how to add a special symbol in Excel.”
+  
+  3. Determine whether a subtitle is needed to provide more specific task details.
+  If the request contains additional task-relevant information not reflected in the title, generate a subtitle.
+  Operational-level information (such as related controls and specific steps) is not considered additional task-related information.
+  Output true in the "judge" field if a subtitle is needed; otherwise, output false.
+  
+  4. Generate a subtitle that supplements the requirements in the request, and output it to the "video_subtitle" field.
+  For example: “Take the © symbol as the example.”
+  If no subtitle is needed (based on step 3), output an empty string "".
+  
+  5. Generate a sample opening line for the subtitle and output it in the "sample_opening_line" field.
+  This line will be the voiceover when the subtitle appears and should match the subtitle content.
+  For example: “Let’s take the example of inserting the © symbol to guide you through the steps.”
+  If no subtitle is needed (based on step 3), output an empty string "".
+  ## Output Format
+  Your response must be a dictionary in this format:
+  {{
+  "video_title":...,
+  "thematic_opening_line":...,
+  "judge":...,
+  "video_subtitle":...,
+  "sample_opening_line":...
+  }}
+
+
+user: |-
+  <request:> {{request}}
+  <Your response:>

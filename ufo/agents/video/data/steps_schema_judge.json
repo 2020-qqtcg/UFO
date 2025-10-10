@@ -1,0 +1,12 @@
+{
+    "properties": {
+        "judge": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "judge"
+    ],
+    "type": "object",
+    "additionalProperties": false
+}

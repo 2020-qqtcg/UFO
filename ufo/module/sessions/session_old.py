@@ -32,7 +32,7 @@ class SessionFactory:
     """
 
     def create_session(
-            self, task: str, mode: str, plan: str, request: str = ""
+        self, task: str, mode: str, plan: str, request: str = ""
     ) -> BaseSession:
         """
         Create a session.
@@ -71,18 +71,11 @@ class SessionFactory:
                     task, configs.get("EVA_SESSION", False), id=0, request=request
                 )
             ]
-        elif mode == "batch_operator":
-            if self.is_folder(plan):
-                return self.create_operator_sessions_in_batch(task, plan)
-            else:
-                return [
-                    OpenAIOperatorFromFileSession(task, plan, configs.get("EVA_SESSION", False), id=0)
-                ]
         else:
             raise ValueError(f"The {mode} mode is not supported.")
 
     def create_follower_session_in_batch(
-            self, task: str, plan: str
+        self, task: str, plan: str
     ) -> List[BaseSession]:
         """
         Create a follower session.
@@ -144,43 +137,6 @@ class SessionFactory:
 
         return sessions
 
-    def create_operator_sessions_in_batch(self, task: str, plan: str) -> List[BaseSession]:
-        """
-        Create a batch of OpenAI Operator sessions from a folder of request files.
-        :param task: The name of the current task.
-        :param plan: The path to the folder containing all request files (.json).
-        :return: A list of created OpenAI Operator sessions.
-        """
-        is_record = configs.get("TASK_STATUS", True)
-        plan_files = self.get_plan_files(plan)
-        file_names = [self.get_file_name_without_extension(f) for f in plan_files]
-        is_done_files = []
-
-        if is_record:
-            file_path = configs.get(
-                "TASK_STATUS_FILE",
-                os.path.join(os.path.dirname(plan), "tasks_status.json"),
-            )
-            if not os.path.exists(file_path):
-                self.task_done = {f: False for f in file_names}
-                json.dump(self.task_done, open(file_path, "w"), indent=4)
-            else:
-                self.task_done = json.load(open(file_path, "r"))
-                is_done_files = [f for f in file_names if self.task_done.get(f, False)]
-
-        sessions = [
-            OpenAIOperatorFromFileSession(
-                f"{task}/{file_name}",
-                plan_file,
-                configs.get("EVA_SESSION", False),
-                id=i,
-            )
-            for i, (file_name, plan_file) in enumerate(zip(file_names, plan_files))
-            if file_name not in is_done_files
-        ]
-
-        return sessions
-
     @staticmethod
     def is_folder(path: str) -> bool:
         """
@@ -214,12 +170,12 @@ class Session(BaseSession):
     """
 
     def __init__(
-            self,
-            task: str,
-            should_evaluate: bool,
-            id: int,
-            request: str = "",
-            mode: str = "normal",
+        self,
+        task: str,
+        should_evaluate: bool,
+        id: int,
+        request: str = "",
+        mode: str = "normal",
     ) -> None:
         """
         Initialize a session.
@@ -329,7 +285,7 @@ class FollowerSession(BaseSession):
     """
 
     def __init__(
-            self, task: str, plan_file: str, should_evaluate: bool, id: int
+        self, task: str, plan_file: str, should_evaluate: bool, id: int
     ) -> None:
         """
         Initialize a session.
@@ -429,7 +385,7 @@ class FromFileSession(BaseSession):
     """
 
     def __init__(
-            self, task: str, plan_file: str, should_evaluate: bool, id: int
+        self, task: str, plan_file: str, should_evaluate: bool, id: int
     ) -> None:
         """
         Initialize a session.
@@ -493,7 +449,7 @@ class FromFileSession(BaseSession):
             return self.plan_reader.get_host_request()
         else:
             self._finish = True
-            return ""
+            return
 
     def get_app_name(self, object_name: str) -> str:
         """
@@ -579,6 +535,8 @@ class FromFileSession(BaseSession):
             # Copy the source file to the target file, preserving metadata
             shutil.copy2(source_file, target_file)
 
+
+
     def setup_application_environment(self):
         """
         Sets up the application environment by determining the application name and
@@ -643,7 +601,7 @@ class OpenAIOperatorSession(Session):
     """
 
     def __init__(
-            self, task: str, should_evaluate: bool, id: int, request: str = ""
+        self, task: str, should_evaluate: bool, id: int, request: str = ""
     ) -> None:
         """
         Initialize a session.
@@ -653,7 +611,7 @@ class OpenAIOperatorSession(Session):
         :param request: The user request of the session, optional. If not provided, UFO will ask the user to input the request.
         """
 
-        super().__init__(task, should_evaluate, id, request, mode="operator")
+        super().__init__(task, should_evaluate, id, request)
 
         inspector = ControlInspectorFacade()
 
@@ -710,82 +668,9 @@ class OpenAIOperatorSession(Session):
             self.evaluation()
 
         if configs.get("LOG_TO_MARKDOWN", True):
+
             file_path = self.log_path
             trajectory = Trajectory(file_path)
             trajectory.to_markdown(file_path + "/output.md")
 
         self.print_cost()
-
-
-class OpenAIOperatorFromFileSession(OpenAIOperatorSession):
-    """
-    A session for UFO Operator from a file.
-    """
-
-    def __init__(
-            self, task: str, plan_file: str, should_evaluate: bool, id: int
-    ) -> None:
-        """
-        Initialize a session.
-        :param task: The name of current task.
-        :param plan_file: The path of the plan file to follow.
-        :param should_evaluate: Whether to evaluate the session.
-        :param id: The id of the session.
-        """
-        self.plan_file = plan_file
-        self.plan_reader = PlanReader(plan_file)
-        request = self.plan_reader.get_host_request()
-
-        super().__init__(task, should_evaluate, id, request)
-
-        self.task_name = task.split("/")[1] if "/" in task else task
-        self.context.set(ContextNames.MODE, "batch_operator")
-
-    def next_request(self) -> str:
-        """
-        Get the request for the host agent from the file.
-        :return: The request for the host agent.
-        """
-        if self.total_rounds == 0:
-            utils.print_with_color(self._init_request, "cyan")
-            return self._init_request
-        else:
-            self._finish = True
-            return ""
-
-    def run(self) -> None:
-        """
-        Run the session and record when done.
-        """
-        try:
-            super().run()
-            self.record_task_done()
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-            print(f"An error occurred: {e}")
-
-    def record_task_done(self) -> None:
-        """
-        Record the task done.
-        """
-        is_record = configs.get("TASK_STATUS", True)
-        if is_record:
-            file_path = configs.get(
-                "TASK_STATUS_FILE",
-                os.path.join(os.path.dirname(self.plan_file), "..", "tasks_status.json"),
-            )
-            try:
-                if os.path.exists(file_path):
-                    with open(file_path, "r") as f:
-                        task_done = json.load(f)
-                else:
-                    task_done = {}
-
-                task_done[self.task_name] = True
-
-                with open(file_path, "w") as f:
-                    json.dump(task_done, f, indent=4)
-
-            except Exception as e:
-                print(f"Error recording task status: {e}")

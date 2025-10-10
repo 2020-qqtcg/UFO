@@ -1,0 +1,24 @@
+{
+    "properties": {
+        "Clear": {
+            "type": "boolean"
+        },
+        "Conciseness": {
+            "type": "boolean"
+        },
+        "Completeness": {
+            "type": "boolean"
+        },
+        "Sequential_Order": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "Clear",
+        "Conciseness",
+        "Completeness",
+        "Sequential_Order"
+    ],
+    "type": "object",
+    "additionalProperties": false
+}

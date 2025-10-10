@@ -1,0 +1,237 @@
+[
+    {
+        "category": "Structured Data Objects",
+        "avg_total_money": 0.4334938518518519,
+        "items": [
+            {
+                "item": "outline",
+                "avg_total_money": 0.7017420000000001,
+                "category": "Structured Data Objects"
+            },
+            {
+                "item": "table",
+                "avg_total_money": 0.3152666666666667,
+                "category": "Structured Data Objects"
+            },
+            {
+                "item": "header",
+                "avg_total_money": 0.2834728888888889,
+                "category": "Structured Data Objects"
+            }
+        ]
+    },
+    {
+        "category": "Visualizations and Inserted Objects",
+        "avg_total_money": 0.31017365789473683,
+        "items": [
+            {
+                "item": "chart",
+                "avg_total_money": 0.43674863157894744,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "shape",
+                "avg_total_money": 0.42088960000000003,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "object",
+                "avg_total_money": 0.22365999999999997,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "button",
+                "avg_total_money": 0.15939640000000002,
+                "category": "Visualizations and Inserted Objects"
+            }
+        ]
+    },
+    {
+        "category": "Cell Content and Annotations",
+        "avg_total_money": 0.2794476671751843,
+        "items": [
+            {
+                "item": "data",
+                "avg_total_money": 0.40856504347826084,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "comment",
+                "avg_total_money": 0.29349755555555557,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "link",
+                "avg_total_money": 0.23933566666666664,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "symbol",
+                "avg_total_money": 0.23343533333333333,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "formula",
+                "avg_total_money": 0.22240473684210527,
+                "category": "Cell Content and Annotations"
+            }
+        ]
+    },
+    {
+        "category": "Other",
+        "avg_total_money": 0.2770532175925926,
+        "items": [
+            {
+                "item": "file",
+                "avg_total_money": 0.3213421111111111,
+                "category": "Other"
+            },
+            {
+                "item": "signature",
+                "avg_total_money": 0.31291949999999996,
+                "category": "Other"
+            },
+            {
+                "item": "setting",
+                "avg_total_money": 0.24755725925925928,
+                "category": "Other"
+            },
+            {
+                "item": "page break",
+                "avg_total_money": 0.22639400000000004,
+                "category": "Other"
+            }
+        ]
+    },
+    {
+        "category": "Automation and Connectivity",
+        "avg_total_money": 0.269053,
+        "items": [
+            {
+                "item": "script",
+                "avg_total_money": 0.33478399999999997,
+                "category": "Automation and Connectivity"
+            },
+            {
+                "item": "external data source",
+                "avg_total_money": 0.203322,
+                "category": "Automation and Connectivity"
+            }
+        ]
+    },
+    {
+        "category": "Document Hierarchy",
+        "avg_total_money": 0.2451055593370857,
+        "items": [
+            {
+                "item": "workbook",
+                "avg_total_money": 0.29203536,
+                "category": "Document Hierarchy"
+            },
+            {
+                "item": "worksheet",
+                "avg_total_money": 0.25384604878048783,
+                "category": "Document Hierarchy"
+            },
+            {
+                "item": "tab",
+                "avg_total_money": 0.18943526923076923,
+                "category": "Document Hierarchy"
+            }
+        ]
+    },
+    {
+        "category": "Grid Components",
+        "avg_total_money": 0.2430335399398396,
+        "items": [
+            {
+                "item": "column",
+                "avg_total_money": 0.29286884848484845,
+                "category": "Grid Components"
+            },
+            {
+                "item": "row",
+                "avg_total_money": 0.285603625,
+                "category": "Grid Components"
+            },
+            {
+                "item": "range",
+                "avg_total_money": 0.207047,
+                "category": "Grid Components"
+            },
+            {
+                "item": "cell",
+                "avg_total_money": 0.1866146862745098,
+                "category": "Grid Components"
+            }
+        ]
+    },
+    {
+        "category": "UI Controls and Commands",
+        "avg_total_money": 0.23444604,
+        "items": [
+            {
+                "item": "tool",
+                "avg_total_money": 0.317136,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "bar",
+                "avg_total_money": 0.2882212,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "menu",
+                "avg_total_money": 0.227712,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "ribbon",
+                "avg_total_money": 0.19380299999999998,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "list",
+                "avg_total_money": 0.145358,
+                "category": "UI Controls and Commands"
+            }
+        ]
+    },
+    {
+        "category": "Application Window and View",
+        "avg_total_money": 0.20423260000000001,
+        "items": [
+            {
+                "item": "window",
+                "avg_total_money": 0.25250680000000003,
+                "category": "Application Window and View"
+            },
+            {
+                "item": "ruler",
+                "avg_total_money": 0.202283,
+                "category": "Application Window and View"
+            },
+            {
+                "item": "view",
+                "avg_total_money": 0.15790800000000002,
+                "category": "Application Window and View"
+            }
+        ]
+    },
+    {
+        "category": "Data Querying and Filtering",
+        "avg_total_money": 0.1926733,
+        "items": [
+            {
+                "item": "query",
+                "avg_total_money": 0.2147446,
+                "category": "Data Querying and Filtering"
+            },
+            {
+                "item": "filter",
+                "avg_total_money": 0.170602,
+                "category": "Data Querying and Filtering"
+            }
+        ]
+    }
+]

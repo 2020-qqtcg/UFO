@@ -1,0 +1,40 @@
+{
+    "$defs": {
+        "Step": {
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "voiceover_script": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "voiceover_script"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "properties": {
+        "video_title": {
+            "type": "string"
+        },
+        "thematic_opening_line": {
+            "type": "string"
+        },
+        "steps": {
+            "additionalProperties": {
+                "$ref": "#/$defs/Step"
+            },
+            "type": "object"
+        }
+    },
+    "required": [
+        "video_title",
+        "thematic_opening_line"
+    ],
+    "type": "object",
+    "additionalProperties": false
+}

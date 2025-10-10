@@ -1,0 +1,36 @@
+{
+    "$defs": {
+        "Step": {
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "written_explanation": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "written_explanation"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "properties": {
+        "task_title": {
+            "type": "string"
+        },
+        "steps": {
+            "additionalProperties": {
+                "$ref": "#/$defs/Step"
+            },
+            "type": "object"
+        }
+    },
+    "required": [
+        "task_title"
+    ],
+    "type": "object",
+    "additionalProperties": false
+}

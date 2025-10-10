@@ -1,0 +1,237 @@
+[
+    {
+        "category": "Structured Data Objects",
+        "avg_total_time": 410.2961578413292,
+        "items": [
+            {
+                "item": "outline",
+                "avg_total_time": 610.9553492069244,
+                "category": "Structured Data Objects"
+            },
+            {
+                "item": "header",
+                "avg_total_time": 326.3775609864129,
+                "category": "Structured Data Objects"
+            },
+            {
+                "item": "table",
+                "avg_total_time": 293.55556333065033,
+                "category": "Structured Data Objects"
+            }
+        ]
+    },
+    {
+        "category": "Visualizations and Inserted Objects",
+        "avg_total_time": 281.0667027956561,
+        "items": [
+            {
+                "item": "chart",
+                "avg_total_time": 392.32002978575855,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "shape",
+                "avg_total_time": 353.758012676239,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "object",
+                "avg_total_time": 217.93110632896423,
+                "category": "Visualizations and Inserted Objects"
+            },
+            {
+                "item": "button",
+                "avg_total_time": 160.2576623916626,
+                "category": "Visualizations and Inserted Objects"
+            }
+        ]
+    },
+    {
+        "category": "Automation and Connectivity",
+        "avg_total_time": 279.4653218090534,
+        "items": [
+            {
+                "item": "script",
+                "avg_total_time": 320.87710976600647,
+                "category": "Automation and Connectivity"
+            },
+            {
+                "item": "external data source",
+                "avg_total_time": 238.05353385210037,
+                "category": "Automation and Connectivity"
+            }
+        ]
+    },
+    {
+        "category": "Other",
+        "avg_total_time": 276.76170495538804,
+        "items": [
+            {
+                "item": "signature",
+                "avg_total_time": 321.27691036462784,
+                "category": "Other"
+            },
+            {
+                "item": "file",
+                "avg_total_time": 307.3831766181522,
+                "category": "Other"
+            },
+            {
+                "item": "setting",
+                "avg_total_time": 253.69322528662505,
+                "category": "Other"
+            },
+            {
+                "item": "page break",
+                "avg_total_time": 224.6935075521469,
+                "category": "Other"
+            }
+        ]
+    },
+    {
+        "category": "Cell Content and Annotations",
+        "avg_total_time": 263.071327684079,
+        "items": [
+            {
+                "item": "data",
+                "avg_total_time": 348.3905506134033,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "link",
+                "avg_total_time": 258.5592243274053,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "symbol",
+                "avg_total_time": 251.1883534193039,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "formula",
+                "avg_total_time": 229.7455036263717,
+                "category": "Cell Content and Annotations"
+            },
+            {
+                "item": "comment",
+                "avg_total_time": 227.4730064339108,
+                "category": "Cell Content and Annotations"
+            }
+        ]
+    },
+    {
+        "category": "UI Controls and Commands",
+        "avg_total_time": 234.5188389658928,
+        "items": [
+            {
+                "item": "tool",
+                "avg_total_time": 284.39443999528885,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "menu",
+                "avg_total_time": 268.81923055648804,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "bar",
+                "avg_total_time": 234.51084280014038,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "ribbon",
+                "avg_total_time": 232.33730328083038,
+                "category": "UI Controls and Commands"
+            },
+            {
+                "item": "list",
+                "avg_total_time": 152.5323781967163,
+                "category": "UI Controls and Commands"
+            }
+        ]
+    },
+    {
+        "category": "Document Hierarchy",
+        "avg_total_time": 230.80941133058545,
+        "items": [
+            {
+                "item": "workbook",
+                "avg_total_time": 269.71619510650635,
+                "category": "Document Hierarchy"
+            },
+            {
+                "item": "worksheet",
+                "avg_total_time": 240.26850956823768,
+                "category": "Document Hierarchy"
+            },
+            {
+                "item": "tab",
+                "avg_total_time": 182.4435293170122,
+                "category": "Document Hierarchy"
+            }
+        ]
+    },
+    {
+        "category": "Grid Components",
+        "avg_total_time": 223.05624326691031,
+        "items": [
+            {
+                "item": "column",
+                "avg_total_time": 266.99364765485126,
+                "category": "Grid Components"
+            },
+            {
+                "item": "row",
+                "avg_total_time": 245.00790767371655,
+                "category": "Grid Components"
+            },
+            {
+                "item": "cell",
+                "avg_total_time": 190.5330562988917,
+                "category": "Grid Components"
+            },
+            {
+                "item": "range",
+                "avg_total_time": 189.69036144018173,
+                "category": "Grid Components"
+            }
+        ]
+    },
+    {
+        "category": "Data Querying and Filtering",
+        "avg_total_time": 182.9143299979322,
+        "items": [
+            {
+                "item": "filter",
+                "avg_total_time": 190.176334437202,
+                "category": "Data Querying and Filtering"
+            },
+            {
+                "item": "query",
+                "avg_total_time": 175.65232555866243,
+                "category": "Data Querying and Filtering"
+            }
+        ]
+    },
+    {
+        "category": "Application Window and View",
+        "avg_total_time": 180.6582341829936,
+        "items": [
+            {
+                "item": "window",
+                "avg_total_time": 216.46602602005004,
+                "category": "Application Window and View"
+            },
+            {
+                "item": "view",
+                "avg_total_time": 210.42377758026123,
+                "category": "Application Window and View"
+            },
+            {
+                "item": "ruler",
+                "avg_total_time": 115.08489894866943,
+                "category": "Application Window and View"
+            }
+        ]
+    }
+]

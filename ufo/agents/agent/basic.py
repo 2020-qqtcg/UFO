@@ -187,6 +187,29 @@ class BasicAgent(ABC):
         )
         return response_string, cost,time_cost,prompt_tokens,completion_token
 
+    # 新增
+    @classmethod
+    def get_response_schema_cost(
+        cls,
+        message: List[dict],
+        schema: dict,
+        namescope: str,
+        use_backup_engine: bool,
+        configs=configs,
+    ) -> str:
+        """
+        Get the response for the prompt.
+        :param message: The message for LLMs.
+        :param namescope: The namescope for the LLMs.
+        :param use_backup_engine: Whether to use the backup engine.
+        :param configs: The configurations.
+        :return: The response.
+        """
+        result,prompt_tokens,completion_tokens,cost,time_taken_seconds = llm_call.get_completion_schema_cost(
+            message, schema,namescope, use_backup_engine=use_backup_engine, configs=configs
+        )
+        return result,prompt_tokens,completion_tokens,cost,time_taken_seconds
+
     @staticmethod
     def response_to_dict(response: str) -> Dict[str, str]:
         """

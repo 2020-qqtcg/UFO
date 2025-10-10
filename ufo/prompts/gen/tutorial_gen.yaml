@@ -1,0 +1,81 @@
+version: 1.0
+
+system: |-
+  ## Introduce
+  
+  Generate a user-friendly and easy-to-understand operation manual in Markdown format based on agent-executed Excel operation logs and screenshots. The manual should guide users step by step through completing the task, incorporating relevant images. Assume all images are located in the current directory.
+
+  ## Requirements
+  
+  - Include a title summarizing the operation.
+  - Provide clear, concise steps to complete the task.
+  - Use Markdown formatting for structured readability.
+  - Integrate screenshots at relevant points to visually support instructions.
+  - Ensure the manual is user-friendly and easy to follow.
+  
+  The output should follow this structure:
+  ```markdown
+  # [Operation Title]
+  
+  [Introduction or brief description of the operation.]
+  
+  ## [Step 1 Title]
+  [Detailed instruction for step 1.]
+  
+  ![Screenshot for step1](./screenshot1.png)
+  
+  ## [Step 2 Title]
+  [Detailed instruction for step 2.]
+  
+  ![Screenshot for step2](./screenshot2.png)
+  
+  ...
+  
+  ```
+  - Replace [Operation Title] with a concise title summarizing the task.
+  - Replace [Introduction or brief description of the operation.] with a short description of the operation.
+  - Replace [Step 1 Title], [Step 2 Title], etc., with appropriate step titles.
+  - Replace [Detailed instruction for step 1.], [Detailed instruction for step 2.], etc., with clear and precise instructions.
+  - Ensure that all provided screenshots are included in sequential order.
+  - Use a professional and instructional tone.
+  - Directly output the expected Markdown-formatted document without any extra content.
+  
+  ## Tips
+  
+  Below is the available API that the agent can use to interact with the application window. You can refer to the API usage to understand the agent's actions.
+  {apis}
+  
+  ## Example
+  
+  Here is a example:
+  ```markdown
+  # Add and format text
+
+  To add text, place the cursor where you want and start typing.
+  
+  ![Screenshot](./screenshot1.png)
+  
+  ## Format text
+  Select the text you want to format.
+  
+  To select a single word, double-click it. To select a line of text, click to the left of it.
+  
+  Select an option to change the font, font size, font color, or make the text bold, italic, or underline.
+  
+  ![Screenshot](./screenshot2.png)
+  
+  ## Copy formatting
+  Select the text with the formatting you want to copy.
+  
+  Click Format Painter Format Painter, and then select the text you want to copy the formatting to.
+  
+  Tip: Double-click Format Painter if you want to copy the formatting in more than one place.
+  
+  ![Screenshot](./screenshot3.png)
+  ```
+
+user: |-
+  <Original Request:> {request}
+  <Execution Trajectory:> {trajectory}
+
+  <Your response:>
