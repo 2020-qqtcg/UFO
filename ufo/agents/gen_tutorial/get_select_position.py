@@ -182,9 +182,8 @@ if __name__ == '__main__':
 
     # 1. 設定包含所有 log 子資料夾的大資料夾路徑
     #    程式會自動遍歷這個資料夾下的所有內容
-    main_folder_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\log_result\20250716_bing_search_completed"
 
-    main_folder_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion_double_4.1_try"
+    main_folder_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete_double"
 
     # 2. 設定您的滑鼠圖示圖片的絕對路徑
     cursor_image_path = "./data/mouse.png"

@@ -11,10 +11,10 @@ from ufo.agents.states.evaluaton_agent_state import EvaluatonAgentStatus
 from ufo.config.config import Config
 from ufo.prompter.demo_gen_prompter import DemoGenAgentPrompter
 from ufo.utils import print_with_color
-from ufo.agents.video.tool.get_request import extract_and_clean_requests
-from ufo.agents.video.tool.gen_document_md import create_help_document
-from ufo.agents.video.tool.gen_document_html import create_html_document
-from ufo.agents.video.tool.gen_document_html_base64_pic import create_html_document_base64
+from ufo.agents.gen_tutorial.tool.get_request import extract_and_clean_requests
+from ufo.agents.gen_tutorial.tool.gen_document_md import create_help_document
+from ufo.agents.gen_tutorial.tool.gen_document_html import create_html_document
+from ufo.agents.gen_tutorial.tool.gen_document_html_base64_pic import create_html_document_base64
 
 configs = Config.get_instance().config_data
 
@@ -142,16 +142,8 @@ if __name__ == "__main__":
         api_prompt=configs["API_PROMPT"],
     )
 
-    # ⭐️ 1. 新增起始點和處理旗標
-    start_folder = "bing_search_query_410001049"
-    start_processing = False  # 初始設為 False，直到找到起始點
 
-    # 路径配置
-    # base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result\20250725_qabench_4.1_cost_complete_double"
-    # base_path =r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_o3\excel_complete_double"
-    # base_path =r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\case_study_use"
-    # base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_gpt5\qabench_completion_double"
-    base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion_double_4.1_try"
+    base_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete_double"
     for folder_name in os.listdir(base_path):
         log_path = os.path.join(base_path, folder_name)
 
@@ -165,23 +157,10 @@ if __name__ == "__main__":
             print(f"{md_file_path} 不存在，跳过")
             continue
 
-        # # ⭐️ 2. 檢查是否到達了指定的起始資料夾
-        # if folder_name == start_folder:
-        #     print(f"🚀 已找到起始點: {folder_name}。開始處理後續所有資料夾。")
-        #     start_processing = True
-        #
-        # # ⭐️ 3. 只有當旗標為 True 時，才執行判斷和複製邏輯
-        # if not start_processing:
-        #     print(f"⏭️  跳過資料夾: {folder_name} (尚未到達起始點)")
-        #     continue
         request = extract_and_clean_requests(md_file_path)
 
         # 创建 output_folder 路径：log_path 下的 "document"
         output_folder = os.path.join(log_path, "document")
-        # 检查 video_cost 文件夹是否已存在，如果存在则跳过
-        # if os.path.isdir(output_folder):
-        #     print(f"⏭️  文件夹 '{output_folder}' 已存在，跳过此案例。")
-        #     continue
         os.makedirs(output_folder, exist_ok=True)  # 如果不存在就创建
 
         # 生成两个输出文件的完整路径
@@ -193,7 +172,7 @@ if __name__ == "__main__":
             request_dict={"request":request}
             json.dump(request_dict, f, ensure_ascii=False, indent=2)
 
-        with open('./ufo/agents/video/data/steps_schema_document.json', 'r') as file:
+        with open('./ufo/agents/gen_tutorial/data/steps_schema_document.json', 'r') as file:
             schema = json.load(file)
 
         result,prompt_tokens,completion_tokens,cost,time_taken_seconds = gen_agent.generate(

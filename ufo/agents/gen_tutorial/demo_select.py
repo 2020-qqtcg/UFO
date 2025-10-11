@@ -11,9 +11,9 @@ from ufo.agents.states.evaluaton_agent_state import EvaluatonAgentStatus
 from ufo.config.config import Config
 from ufo.prompter.demo_gen_prompter import DemoGenAgentPrompter
 from ufo.utils import print_with_color
-from ufo.agents.video.tool.get_request import extract_and_clean_requests
+from ufo.agents.gen_tutorial.tool.get_request import extract_and_clean_requests
 import os
-from ufo.agents.video.tool.gen_video import create_video_with_subtitles_and_audio
+from ufo.agents.gen_tutorial.tool.gen_video import create_video_with_subtitles_and_audio
 
 import json
 
@@ -165,18 +165,12 @@ if __name__ == "__main__":
         api_prompt=configs["API_PROMPT"],
     )
 
-
-
     # 路径配置
-    base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_gpt5\m365_completion"
-    copy_path=r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_gpt5\m365_completion_double"
+    base_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete"
+    copy_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete_double"
 
-    base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\m365_completion"
-    copy_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\m365_completion_double_4.1_2"
-
-    # 路径配置
-    base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion"
-    copy_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion_double_4.1_try"
+    # 如果路径不存在，则创建
+    os.makedirs(copy_path, exist_ok=True)
 
     # 检查 base_path 是否存在
     if not os.path.isdir(base_path):
@@ -219,7 +213,7 @@ if __name__ == "__main__":
             # 生成两个输出文件的完整路径
             step_output_path = os.path.join(output_folder, "video_demo_step.json")
 
-            with open('./ufo/agents/video/data/steps_schema_video.json', 'r') as file:
+            with open('./ufo/agents/gen_tutorial/data/steps_schema_video.json', 'r') as file:
                 schema = json.load(file)
 
             # results = gen_agent.generate(
@@ -229,7 +223,7 @@ if __name__ == "__main__":
 
             step_judge_output_path = os.path.join(output_folder, "step_judge.json")
 
-            with open('./ufo/agents/video/data/steps_schema_judge.json', 'r') as file:
+            with open('./ufo/agents/gen_tutorial/data/steps_schema_judge.json', 'r') as file:
                 schema_judge = json.load(file)
 
             result_judge,prompt_tokens,completion_tokens,cost,time_taken_seconds = gen_agent_judge.generate(

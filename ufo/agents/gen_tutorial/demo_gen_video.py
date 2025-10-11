@@ -11,9 +11,9 @@ from ufo.agents.states.evaluaton_agent_state import EvaluatonAgentStatus
 from ufo.config.config import Config
 from ufo.prompter.demo_gen_prompter import DemoGenAgentPrompter
 from ufo.utils import print_with_color
-from ufo.agents.video.tool.get_request import extract_and_clean_requests
+from ufo.agents.gen_tutorial.tool.get_request import extract_and_clean_requests
 import os
-from ufo.agents.video.tool.gen_video import create_video_with_subtitles_and_audio
+from ufo.agents.gen_tutorial.tool.gen_video import create_video_with_subtitles_and_audio
 
 import json
 
@@ -134,15 +134,6 @@ class TutorialGenAgent(BasicAgent):
 # The following code is used for testing the agent.
 if __name__ == "__main__":
 
-    gen_agent_judge = TutorialGenAgent(
-        name="tutorial_gen_agent",
-        app_root_name="WINWORD.EXE",
-        is_visual=True,
-        main_prompt=configs["DEMO_PROMPT_JUDGE"],
-        example_prompt="",
-        api_prompt=configs["API_PROMPT"],
-    )
-
     gen_agent = TutorialGenAgent(
         name="tutorial_gen_agent",
         app_root_name="WINWORD.EXE",
@@ -153,17 +144,12 @@ if __name__ == "__main__":
     )
 
     # 路径配置
-    # base_path =r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_o3\excel_complete_double"
-    # base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\case_study_use"
-    # base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_gpt5\qabench_completion_double"
-    base_path =r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion_double_4.1_try"
+    base_path =r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete_double"
     # 检查 base_path 是否存在
     if not os.path.isdir(base_path):
         print(f"错误: 基础路径 '{base_path}' 不存在或不是一个文件夹。")
     else:
-        # ⭐️ 1. 新增起始點和處理旗標
-        start_folder = "bing_search_query_410001005"
-        start_processing = False  # 初始設為 False，直到找到起始點
+
         # 遍历 base_path 下的所有项目
         for folder_name in os.listdir(base_path):
             log_path = os.path.join(base_path, folder_name)
@@ -177,18 +163,6 @@ if __name__ == "__main__":
                 continue
             request = extract_and_clean_requests(md_file_path)
 
-            # # ⭐️ 2. 檢查是否到達了指定的起始資料夾
-            # if folder_name == start_folder:
-            #     print(f"🚀 已找到起始點: {folder_name}。開始處理後續所有資料夾。")
-            #     start_processing = True
-            #
-            #
-            # # ⭐️ 3. 只有當旗標為 True 時，才執行判斷和複製邏輯
-            # if not start_processing:
-            #     print(f"⏭️  跳過資料夾: {folder_name} (尚未到達起始點)")
-            #     continue
-
-
             # 创建 output_folder 路径：log_path 下的 "video_demo"
             output_folder = os.path.join(log_path, "video")
             # 检查 video_cost 文件夹是否已存在，如果存在则跳过
@@ -201,7 +175,7 @@ if __name__ == "__main__":
             step_output_path = os.path.join(output_folder, "video_demo_step.json")
             cost_output_path = os.path.join(output_folder, "video_demo_cost.json")
 
-            with open('./ufo/agents/video/data/steps_schema_video.json', 'r') as file:
+            with open('./ufo/agents/gen_tutorial/data/steps_schema_video.json', 'r') as file:
                 schema = json.load(file)
 
             # if not os.path.exists(step_output_path):
@@ -282,7 +256,7 @@ if __name__ == "__main__":
 
             video_title = image_step_dict["video_title"]
             thematic_opening_line = image_step_dict["thematic_opening_line"]
-            initial_image_file = "./ufo/agents/video/data/title_background.jpg"
+            initial_image_file = "./ufo/agents/gen_tutorial/data/title_background.jpg"
 
             try:
                 create_video_with_subtitles_and_audio(

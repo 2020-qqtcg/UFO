@@ -3,19 +3,11 @@ import json
 import shutil  # 1. 引入 shutil 模組
 
 # --- 設定路徑 ---
-# 來源路徑：包含所有待檢查子資料夾的根目錄
-# base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\20250725_qabench_4.1_cost"
-# base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\20250726_qabench_4.1_cost_without_api"
-# base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_o3\excel"
-# base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\20250828_qabench_4.1_ufo1"
-base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_operator"
+base_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try"
 # 目標路徑：將完成的資料夾複製到這裡
-# destination_base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\20250725_qabench_4.1_cost_complete"
-# destination_base_path = r"C:\Users\v-yuhangxie\UFO_ssb_0708\logs\20250726_qabench_4.1_cost_without_api_complete"
-# destination_base_path =r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_o3\excel_complete"
-# destination_base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_ufo1_baseilne\qabench_completion"
-destination_base_path = r"C:\Users\v-yuhangxie\OneDrive - Microsoft\uiagent_result_operator_complete"
-
+destination_base_path = r"C:\Users\v-yuhangxie\UFO_1011\logs\20251011_try_complete"
+# 如果路径不存在，则创建
+os.makedirs(destination_base_path, exist_ok=True)
 # --- 初始化 ---
 completed_folders = []
 
